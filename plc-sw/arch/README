@@ -1,0 +1,3 @@
+This is the architecture-specific area of the codebase. If porting to a new
+platform, this and the root makefile include should be the only things that
+need to change.

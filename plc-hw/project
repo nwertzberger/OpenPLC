@@ -1,0 +1,2 @@
+schematics sim_uc.sch sim_ether.sch sim_phys_out.sch sim_pwr.sch sim_phys_in.sch
+output-name sim_board

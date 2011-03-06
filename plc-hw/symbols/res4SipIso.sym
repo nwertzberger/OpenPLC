@@ -1,0 +1,104 @@
+v 20100214 2
+P 1100 900 800 900 1 0 0
+{
+T 900 950 5 8 1 1 0 0 1
+pinnumber=2
+T 900 850 5 8 0 1 0 2 1
+pinseq=2
+T 750 900 5 8 0 1 0 8 1
+pintype=pas
+}
+P 1100 700 800 700 1 0 0
+{
+T 900 750 5 8 1 1 0 0 1
+pinnumber=4
+T 900 650 5 8 0 1 0 2 1
+pinseq=4
+T 750 700 5 8 0 1 0 8 1
+pintype=pas
+}
+P 1100 500 800 500 1 0 0
+{
+T 900 550 5 8 1 1 0 0 1
+pinnumber=6
+T 900 450 5 8 0 1 0 2 1
+pinseq=6
+T 750 500 5 8 0 1 0 8 1
+pintype=pas
+}
+P 1100 300 800 300 1 0 0
+{
+T 900 350 5 8 1 1 0 0 1
+pinnumber=8
+T 900 250 5 8 0 1 0 2 1
+pinseq=8
+T 750 300 5 8 0 1 0 8 1
+pintype=pas
+}
+P 100 900 400 900 1 0 0
+{
+T 300 950 5 8 1 1 0 6 1
+pinnumber=1
+T 300 850 5 8 0 1 0 8 1
+pinseq=1
+T 450 900 5 8 0 1 0 2 1
+pintype=pas
+}
+P 100 700 400 700 1 0 0
+{
+T 300 750 5 8 1 1 0 6 1
+pinnumber=3
+T 300 650 5 8 0 1 0 8 1
+pinseq=3
+T 450 700 5 8 0 1 0 2 1
+pintype=pas
+}
+P 100 500 400 500 1 0 0
+{
+T 300 550 5 8 1 1 0 6 1
+pinnumber=5
+T 300 450 5 8 0 1 0 8 1
+pinseq=5
+T 450 500 5 8 0 1 0 2 1
+pintype=pas
+}
+P 100 300 400 300 1 0 0
+{
+T 300 350 5 8 1 1 0 6 1
+pinnumber=7
+T 300 250 5 8 0 1 0 8 1
+pinseq=7
+T 450 300 5 8 0 1 0 2 1
+pintype=pas
+}
+B 400 100 400 1000 3 0 0 0 -1 -1 0 -1 -1 -1 -1 -1
+T 800 1200 8 10 1 1 0 6 1
+refdes=U?
+T 700 300 9 10 1 0 90 0 1
+SIP-RC
+T 400 1400 5 10 0 0 0 0 1
+device=SIP-RC
+T 400 1600 5 10 0 0 0 0 1
+footprint=SIP8
+T 400 1800 5 10 0 0 0 0 1
+author=Nicholas Wertzberger
+T 400 2000 5 10 0 0 0 0 1
+documentation=http://www.mouser.com/catalog/specsheets/XC-600048.pdf
+T 400 2200 5 10 0 0 0 0 1
+description=Isolated Sip Resistor Pack
+T 400 2400 5 10 0 0 0 0 1
+numslots=0
+T 400 2600 5 10 0 0 0 0 1
+dist-license=Free
+T 400 2800 5 10 0 0 0 0 1
+use-license=Free
+T 400 3000 5 10 0 0 0 0 1
+slot=1
+T 400 3200 5 10 0 0 0 0 1
+slotdef=1:1,2
+T 400 3400 5 10 0 0 0 0 1
+slotdef=2:3,4
+T 400 3600 5 10 0 0 0 0 1
+slotdef=3:5,6
+T 400 3800 5 10 0 0 0 0 1
+slotdef=4:7,8

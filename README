@@ -1,0 +1,24 @@
+OpenPLC
+
+University of Nebraska, Omaha
+Copyright 2011.
+
+----------------------------------------------------------------------------
+
+OpenPLC is designed to offer a cheap, open source alternative platform for
+control when security and safety are not an issue.  The device uses similar
+ladder logic and ModBus protocols as major PLC.  It also can produce and read
+24V Hardware IO. Using these tools, this device is capable of performing
+comparable work to that of a more expensive PLC.
+
+The code is laid out as follows:
+uip     - The open-source TCP-IP stack module
+dhcpc   - The DHCP layer.
+modbus  - The modbus layer.
+usb     - The usb module.
+include - Global includes.
+lib     - Global Libraries.
+core    - The core PLC functions. main is here.
+sim     - The interface for the simulator option for this PLC.
+logic   - The Logic module: runs ladder logic and maintains virtual registers.
+arch    - Architecture-specific functions (i.e. IO, Timers, etc.)

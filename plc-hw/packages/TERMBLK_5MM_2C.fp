@@ -1,0 +1,10 @@
+Element(0x00 "5MM Terminal Block, Through Hole" "" "TRMBLK_5MM_2C" 160 10 3 100 0x00)
+(
+	Pin(100 100 80 28 "1" 0x101)
+	Pin(100 297 80 28 "2" 0x01)
+	ElementLine(0 0 0 397 20)
+	ElementLine(200 0 200 397 20)
+	ElementLine(0 0 200 0 20)
+	ElementLine(0 397 200 397 20)
+	Mark(100 100)
+)

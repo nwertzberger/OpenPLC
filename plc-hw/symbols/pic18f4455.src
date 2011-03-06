@@ -1,0 +1,103 @@
+# This is the template file for creating symbols with tragesym
+# every line starting with '#' is a comment line.
+
+[options]
+# wordswap swaps labels if the pin is on the right side an looks like this:
+#   "PB1 (CLK)". That's useful for micro controller port labels
+# rotate_labels rotates the pintext of top and bottom pins
+#   this is useful for large symbols like FPGAs with more than 100 pins
+# sort_labels will sort the pins by it's labels
+#   useful for address ports, busses, ...
+wordswap=yes
+rotate_labels=yes
+sort_labels=yes
+generate_pinseq=yes
+sym_width=4000
+pinwidthvertical=200
+pinwidthhorizontal=200
+
+[geda_attr]
+# name will be printed in the top of the symbol
+# name is only some graphical text, not an attribute
+# version specifies a gschem version.
+# if you have a device with slots, you'll have to use slot= and slotdef=
+# use comment= if there are special information you want to add
+version=20060113 1
+name=PIC18F4455
+device=PIC18F4455
+refdes=U?
+footprint=tqfp-44
+description= PIC Microcontroller
+documentation= http://ww1.microchip.com/downloads/en/DeviceDoc/39632c.pdf
+author= Nicholas Wertzberger
+dist-license=Free
+use-license=Free
+numslots=0
+#slot=1
+#slotdef=1:
+#slotdef=2:
+#slotdef=3:
+#slotdef=4:
+#comment=
+#comment=
+#comment=
+
+[pins]
+# tabseparated list of pin descriptions
+# ----------------------------------------
+# pinnr is the physical number of the pin
+# seq is the pinseq= attribute, leave it blank if it doesn't matter
+# type can be (in, out, io, oc, oe, pas, tp, tri, clk, pwr)
+# style can be (line,dot,clk,dotclk,spacer,none). none if only want to add a net
+# posit. can be (l,r,t,b) or empty for nets.
+# net specifies the name of the net. Vcc or GND for example.
+# label represents the pinlabel.
+#	negation lines can be added with "\_" example: \_enable\_ 
+#	if you want to write a "\" use "\\" as escape sequence
+#-----------------------------------------------------
+#pinnr	seq	type	style	posit.	net	label	
+#-----------------------------------------------------
+1		io	line	r		RC7/RX/DT/SDO
+2		io	line	l		RD4/SPP4
+3		io	line	l		RD5/SPP5/P1B
+4		io	line	l		RD6/SPP6/P1C
+5		io	line	l		RD7/SPP7/P1D
+6		pwr	line	b		VSS
+7		pwr	line	t		VDD
+8		io	line	r		RB0/AN12/INT0/FLT0/SDI/SDA
+9		io	line	r		RB1/AN10/INT1/SCK/SCL
+10		io	line	r		RB2/AN8/INT2/VMO
+11		io	line	l		RB3/AN9/CCP2(1)/VPO
+12		io	line	r		NC/ICCK(2)/ICPGC(2)
+13		io	line	r		NC/ICDT(2)/ICPGD(2)
+14		io	line	l		RB4/AN11/KBI0/CSSPP
+15		io	line	l		RB5/KBI1/PGM
+16		io	line	l		RB6/KBI2/PGC
+17		io	line	l		RB7/KBI3/PGD
+18		in	dot	r		_MCLR/VPP/RE3
+19		io	line	l		RA0/AN0
+20		io	line	l		RA1/AN1
+21		io	line	l		RA2/AN2/VREF-/CVREF
+22		io	line	l		RA3/AN3/VREF+
+23		io	line	r		RA4/T0CKI/C1OUT/RCV
+24		io	line	l		RA5/AN4/SS/HLVDIN/C2OUT
+25		io	line	l		RE0/AN5/CK1SPP
+26		io	line	l		RE1/AN6/CK2SPP
+27		io	line	l		RE2/AN7/OESPP
+28		pwr	line	t		VDD
+29		pwr	line	b		VSS
+30		in	line	r		OSC1/CLKI
+31		in	line	r		OSC2/CLKO/RA6
+32		io	line	l		RC0/T1OSO/T13CKI
+33		io	none	r		NC/ICRST(2)/ICVPP(2)
+34		io	none	r		NC/ICPORTS(2)
+35		io	line	r		RC1/T1OSI/CCP2(1)/UOE
+36		io	line	l		RC2/CCP1/P1A
+37		in	line	t		VUSB
+38		io	line	l		RD0/SPP0
+39		io	line	l		RD1/SPP1
+40		io	line	l		RD2/SPP2
+41		io	line	l		RD3/SPP3
+42		io	line	l		RC4/D-/VM
+43		io	line	l		RC5/D+/VP
+44		io	line	l		RC6/TX/CK
