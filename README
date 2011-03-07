@@ -1,9 +1,37 @@
-OpenPLC
+   ____                   ____  __    ______
+  / __ \____  ___  ____  / __ \/ /   / ____/
+ / / / / __ \/ _ \/ __ \/ /_/ / /   / /     
+/ /_/ / /_/ /  __/ / / / ____/ /___/ /___   
+\____/ .___/\___/_/ /_/_/   /_____/\____/   
+    /_/                                     
 
-University of Nebraska, Omaha
-Copyright 2011.
+Copyright 2011 University of Nebraska, Omaha
+----------------------------------------------------------------------------
+LICENSING
+
+All original works are released under the Creative Commons Attribution-
+ShareAlike 3.0 Unported (CC BY-SA 3.0) License. This covers all hardware
+designs and all software with the following exceptions:
+
+usbstack -  This module is based on the Honken USB Stack, which is released
+            on the Same license as this work.
+
+dhcpc, uip  -   These modules are from uIP, and are released under the
+                BSD license.
+
+You can get a copy of the Creative Commons 3.0 license at the following URI:
+    http://creativecommons.org/licenses/by-sa/3.0/
+
+OR by mailing the following address:
+
+    Creative Commons
+    171 Second Street
+    Suite 300
+    San Francisco, CA 94105
+    USA
 
 ----------------------------------------------------------------------------
+INTRODUCTION
 
 OpenPLC is designed to offer a cheap, open source alternative platform for
 control when security and safety are not an issue.  The device uses similar
@@ -12,13 +40,15 @@ ladder logic and ModBus protocols as major PLC.  It also can produce and read
 comparable work to that of a more expensive PLC.
 
 The code is laid out as follows:
-uip     - The open-source TCP-IP stack module
-dhcpc   - The DHCP layer.
-modbus  - The modbus layer.
-usb     - The usb module.
 include - Global includes.
 lib     - Global Libraries.
-core    - The core PLC functions. main is here.
-sim     - The interface for the simulator option for this PLC.
 logic   - The Logic module: runs ladder logic and maintains virtual registers.
+core    - The core PLC functions. main is here.
+dhcpc   - The DHCP layer.
+uip     - The open-source TCP-IP stack module
+usb     - The usb module.
+usbstack- The Honken USB stack
 arch    - Architecture-specific functions (i.e. IO, Timers, etc.)
+
+----------------------------------------------------------------------------
+
