@@ -1,0 +1,2 @@
+cdc.rel: cdc.c cdc_config.h usb_stack.h PICUSB.h
+usb_stack.rel: usb_stack.c globals.h cdc_config.h usb_stack.h PICUSB.h
