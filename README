@@ -5,30 +5,36 @@
 \____/ .___/\___/_/ /_/_/   /_____/\____/   
     /_/                                     
 
-Copyright 2011 University of Nebraska, Omaha
 ----------------------------------------------------------------------------
-LICENSING
+The MIT License
 
-All original works are released under the Creative Commons Attribution-
-ShareAlike 3.0 Unported (CC BY-SA 3.0) License. This covers all hardware
-designs and all software with the following exceptions:
+Copyright (c) 2011 University of Nebraska, Omaha
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+This product will be used for good, not evil.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 usbstack -  This module is based on the Honken USB Stack, which is released
-            on the Same license as this work.
+            under the Creative Commons Share-Alike License.
 
 dhcpc, uip  -   These modules are from uIP, and are released under the
                 BSD license.
-
-You can get a copy of the Creative Commons 3.0 license at the following URI:
-    http://creativecommons.org/licenses/by-sa/3.0/
-
-OR by mailing the following address:
-
-    Creative Commons
-    171 Second Street
-    Suite 300
-    San Francisco, CA 94105
-    USA
 
 ----------------------------------------------------------------------------
 INTRODUCTION
@@ -51,4 +57,15 @@ usbstack- The Honken USB stack
 arch    - Architecture-specific functions (i.e. IO, Timers, etc.)
 
 ----------------------------------------------------------------------------
+INSTALLATION
+
+Currently, you are pretty on your own for this.  In order to assist in
+setting up the environment needed for development on this platform, a script
+is trying to be built that will automate all of the downloads you will need
+to set up.  Here is the list of things you will need:
+
+libusb-dev
+pk2cmd
+gputils
+sdcc <- i get this one from the repository, but it may not be necessary.
 

@@ -1,5 +1,7 @@
 all:
 	@echo "Please enter in what you want to make."
+	@echo "- test_startup: test to see if the board starts up"
+	@echo "- clean"
 
 test_system: arch_pic16
 	cd test/system; make
