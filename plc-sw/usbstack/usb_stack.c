@@ -85,9 +85,7 @@ usb_ep_t endpoints[MAX_CHIP_EP]; // JTR change. MAX_CHIP_EP is the number of har
 // Please see http://dangerousprototypes.com/forum/viewtopic.php?f=39&t=1651&start=120#p17401
 
 #if defined(PIC_18F)
-#pragma udata usb_bdt
 BDentry usb_bdt[2 + 2 * MAX_EPNUM_USED];	// JTR changed index from 32 to variable
-#pragma udata usb_data
 //* Only claim buffer for ep 0 */
     #if USB_PP_BUF_MODE == 0
         unsigned char usb_ep0_out_buf[USB_EP0_BUFFER_SIZE];
@@ -97,7 +95,6 @@ BDentry usb_bdt[2 + 2 * MAX_EPNUM_USED];	// JTR changed index from 32 to variabl
     #endif
 
 #elif defined(PIC_24F)
-#pragma udata usb_bdt
 BDentry usb_bdt[2 + 2 * MAX_EPNUM_USED]  __attribute__((aligned(512)));			// JTR changed index from 32 to variable TODO: Dynamic allocation reflecting number of used endpoints. (How to do counting in preprocessor?)
     #if USB_PP_BUF_MODE == 0
         unsigned char usb_ep0_out_buf[USB_EP0_BUFFER_SIZE];
@@ -107,7 +104,6 @@ BDentry usb_bdt[2 + 2 * MAX_EPNUM_USED]  __attribute__((aligned(512)));			// JTR
     #endif
 #endif
 
-#pragma udata
 unsigned int usb_device_status;
 unsigned int usb_current_cfg;
 volatile unsigned char usb_device_state;
@@ -494,7 +490,7 @@ void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
 //		rbdp->BDSTAT = UOWN + DTS + DTSEN;
 		break;
 	case USB_REQUEST_CLEAR_FEATURE:
-		if (0x01u == packet[USB_wValue])	{	// TODO: Remove magic (REMOTE_WAKEUP_FEATURE)
+		if (0x01u == packet[USB_wValue]) {  // TODO: Remove magic (REMOTE_WAKEUP_FEATURE)
 			usb_device_status &= ~0x0002;
 			usb_ack_dat1( rbdp, 0 );	// JTR common addition for STD and CLASS ACK
 //			rbdp->BDCNT = 0;
@@ -503,7 +499,7 @@ void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
 			usb_RequestError();
 		break;
 	case USB_REQUEST_SET_FEATURE:
-		if (0x01u == packet[USB_wValue])	{	// TODO: Remove magic (REMOTE_WAKEUP_FEATURE)
+		if (0x01u == packet[USB_wValue]) {  // TODO: Remove magic (REMOTE_WAKEUP_FEATURE)
 			usb_device_status |= 0x0002;
 			usb_ack_dat1( rbdp, 0 );	// JTR common addition for STD and CLASS ACK
 //			rbdp->BDCNT = 0;
@@ -532,16 +528,19 @@ void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
 				usb_desc_len = packet[USB_wLength];
 			break;
 		case USB_CONFIGURATION_DESCRIPTOR_TYPE:
-			if (packet[USB_bDescriptorIndex] >= usb_device_descriptor[17])	// TODO: remove magic
+            // TODO: remove magic
+			if (packet[USB_bDescriptorIndex] >= usb_device_descriptor[17])
 				usb_RequestError();
 			usb_desc_ptr = usb_config_descriptor;
 			usb_desc_len = usb_desc_ptr[2] + usb_desc_ptr[3] * 256;
-			for (i=0; i<packet[USB_bDescriptorIndex]; i++) {				// Implicit linked list traversal until requested configuration
+            // Implicit linked list traversal until requested configuration
+			for (i=0; i<packet[USB_bDescriptorIndex]; i++) {
 				usb_desc_ptr += usb_desc_len;
 				usb_desc_len = usb_desc_ptr[2] + usb_desc_ptr[3] * 256;
 			}
 			if ((packet[USB_wLengthHigh] <  usb_desc_ptr[3]) ||
-				(packet[USB_wLengthHigh] == usb_desc_ptr[3] && packet[USB_wLength] < usb_desc_ptr[2]))
+				(packet[USB_wLengthHigh] == usb_desc_ptr[3] 
+                        && packet[USB_wLength] < usb_desc_ptr[2]))
 				usb_desc_len = packet[USB_wLength] + packet[USB_wLengthHigh] * 256;
 			break;
 		case USB_STRING_DESCRIPTOR_TYPE:
@@ -550,7 +549,8 @@ void usb_handle_StandardDeviceRequest( BDentry *bdp ) {
 				usb_RequestError();
 			usb_desc_ptr = usb_string_descriptor;
 			usb_desc_len = usb_desc_ptr[0];
-			for (i=0; i<packet[USB_bDescriptorIndex]; i++) {				// Implicit linked list traversal until requested configuration
+            // Implicit linked list traversal until requested configuration
+			for (i=0; i<packet[USB_bDescriptorIndex]; i++) {
 				usb_desc_ptr += usb_desc_len;
 				usb_desc_len = usb_desc_ptr[0];
 			}

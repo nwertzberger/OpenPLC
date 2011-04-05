@@ -18,23 +18,23 @@ or send a letter to
 
 #include "PICUSB.h"     // JTR combined PIC_18F and PIC_24F header. This is the only included header.
 
-#define USB_TOKEN_Mask  0b00111100
-#define USB_TOKEN_OUT   0b00000100
-#define USB_TOKEN_IN    0b00100100
-#define USB_TOKEN_SOF   0b00010100
-#define USB_TOKEN_SETUP 0b00110100
-#define USB_TOKEN_DATA0 0b00001100
-#define USB_TOKEN_DATA1 0b00101100
-#define USB_TOKEN_DATA2 0b00011100              /* High speed isochronous endpoints only */
-#define USB_TOKEN_MDATA 0b00111100              /* High speed isochronous enpoints and hub devices only */
-#define USB_TOKEN_ACK   0b00001000
-#define USB_TOKEN_NAK   0b00101000
-#define USB_TOKEN_STALL 0b00111000
-#define USB_TOKEN_NYET  0b00011000              /* High speed devices only */
-#define USB_TOKEN_PRE   0b00110000
-#define USB_TOKEN_ERR   0b00110000
-#define USB_TOKEN_SPLIT 0b00100000              /* Hub devices only */
-#define USB_TOKEN_PING  0b00010000              /* High speed devices only */
+#define USB_TOKEN_Mask  0x3c
+#define USB_TOKEN_OUT   0x04
+#define USB_TOKEN_IN    0x24
+#define USB_TOKEN_SOF   0x14
+#define USB_TOKEN_SETUP 0x34
+#define USB_TOKEN_DATA0 0x0c
+#define USB_TOKEN_DATA1 0x2c
+#define USB_TOKEN_DATA2 0x1c              /* High speed isochronous endpoints only */
+#define USB_TOKEN_MDATA 0x3c              /* High speed isochronous enpoints and hub devices only */
+#define USB_TOKEN_ACK   0x08
+#define USB_TOKEN_NAK   0x28
+#define USB_TOKEN_STALL 0x38
+#define USB_TOKEN_NYET  0x18              /* High speed devices only */
+#define USB_TOKEN_PRE   0x30
+#define USB_TOKEN_ERR   0x30
+#define USB_TOKEN_SPLIT 0x20              /* Hub devices only */
+#define USB_TOKEN_PING  0x10              /* High speed devices only */
 
 /* Descriptor Types */
 #define USB_DEVICE_DESCRIPTOR_TYPE                      1u
@@ -61,18 +61,18 @@ or send a letter to
 #define USB_wLength                             6
 #define USB_wLengthHigh                         7
 
-#define USB_bmRequestType_PhaseMask             0b10000000
-#define USB_bmRequestType_H2D                   0b00000000
-#define USB_bmRequestType_D2H                   0b10000000
-#define USB_bmRequestType_TypeMask              0b01100000
-#define USB_bmRequestType_Standard              0b00000000
-#define USB_bmRequestType_Class                 0b00100000
-#define USB_bmRequestType_Vendor                0b01000000
-#define USB_bmRequestType_RecipientMask         0b00000011
-#define USB_bmRequestType_Device                0b00000000
-#define USB_bmRequestType_Interface             0b00000001
-#define USB_bmRequestType_Endpoint              0b00000010
-#define USB_bmRequestType_Other                 0b00000011
+#define USB_bmRequestType_PhaseMask             0x80
+#define USB_bmRequestType_H2D                   0x00
+#define USB_bmRequestType_D2H                   0x80
+#define USB_bmRequestType_TypeMask              0x60
+#define USB_bmRequestType_Standard              0x00
+#define USB_bmRequestType_Class                 0x20
+#define USB_bmRequestType_Vendor                0x40
+#define USB_bmRequestType_RecipientMask         0x03
+#define USB_bmRequestType_Device                0x00
+#define USB_bmRequestType_Interface             0x01
+#define USB_bmRequestType_Endpoint              0x02
+#define USB_bmRequestType_Other                 0x03
 
 #define USB_REQUEST_GET_STATUS                  0
 #define USB_REQUEST_CLEAR_FEATURE               1

@@ -13,7 +13,7 @@ or send a letter to
 
 // JTR v0.1a
 
-/* JTR
+JTR
 This file operates as the global header for <function> implementation
 It is applicable to both PIC18 and PIC24.
 

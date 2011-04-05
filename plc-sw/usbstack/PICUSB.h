@@ -100,7 +100,7 @@ entries common to both PIC families.
 #if defined(PIC_18F)
 
 #define MyProcessor     // JTR check that a PIC is defined
-#include <p18cxxx.h>
+#include <pic18fregs.h>
 
 #define USTAT_ODD_EVEN (2)      // JTR may be required for ping-pong BD* calculations and are different from PIC18 to PIC24
 #define USTAT_ODD_EVEN_SHIFT (1)
@@ -284,8 +284,8 @@ typedef unsigned char usb_uep_t;
 
 #define ConfigureUsbHardware()                  do {UCFG = USB_UCFG_REGISTER_VALUE;} while(0)
 
-#define ROM far rom
-#define ROMPTR far rom
+#define ROM __code
+#define ROMPTR __code
 #define ARCH_memcpy memcpypgm2ram
 
 typedef struct BDENTRY {
