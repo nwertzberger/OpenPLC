@@ -44,7 +44,6 @@ Influence and inspiration taken from http://pe.ece.olin.edu/ece/projects.html
 #error "USB_EP0_BUFFER_SIZE needs to be 8, 16, 32 or 64 bytes"
 #endif
 
-
 ROMPTR const unsigned char *usb_device_descriptor;
 ROMPTR const unsigned char *usb_config_descriptor;
 ROMPTR const unsigned char *usb_string_descriptor;
@@ -111,9 +110,7 @@ unsigned char usb_addr_pending;
 usb_status_t trn_status;					// Global since it is needed everywere
 BDentry *bdp, *rbdp;						// Dito
 
-// JTR PIC24 fixup. Correct solution from the forum. http://dangerousprototypes.com/forum/viewtopic.php?f=39&t=1651&start=150#p17701
-//ROM const unsigned char *usb_desc_ptr;
-ROMPTR const unsigned char *usb_desc_ptr;
+const unsigned char *usb_desc_ptr;
 size_t usb_desc_len;
 
 /* Forward Reference Prototypes */
