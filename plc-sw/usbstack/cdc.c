@@ -115,13 +115,13 @@ struct cdc_ControlLineState {
 
 unsigned char *data, *data_end;
 BDentry *rxbdp, *txbdp;
-volatile unsigned char CDC_trf_state;	// JTR don't see that it is really volatile in current context may be in future.
+volatile unsigned char CDC_trf_state;
 
 // JTR removed and trashed. not required with CDC - ACM.
 // unsigned char cdc _acm _out _buffer[CDC_BUFFER_SIZE];
 unsigned char cdc_rx_buffer[CDC_BUFFER_SIZE];
 unsigned char cdc_tx_buffer[CDC_BUFFER_SIZE];
-unsigned char cdc_acm_in_buffer[CDC_NOTICE_BUFFER_SIZE];    //JTR NEWLY defined NOTICE BUFFER SIZE and increased from 8 to 10 bytes in usb_config.h
+unsigned char cdc_acm_in_buffer[CDC_NOTICE_BUFFER_SIZE]; 
 
 unsigned int SOFCOUNT;
 

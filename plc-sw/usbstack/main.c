@@ -25,6 +25,8 @@ Influence and inspiration taken from http://pe.ece.olin.edu/ece/projects.html
 #include "usb_stack.h"
 #include "configwords.h"	// JTR only included in main.c
 #include "descriptors.h"	// JTR Only included in main.c
+
+#include "arch_startup.h"
 //#include "cdc.h"                // JTR This file has prototypes for the CDC functions that are not currently in operation.
 
 void user_configured_init( void );
@@ -38,7 +40,6 @@ void CDCService(void);		// JTR for debugging only
 extern volatile unsigned char usb_device_state;	// JTR added
 extern unsigned char CDC_trf_state;
 
-#pragma udata
 // MAIN LOOP STARTS HERE
 
 #if defined(PIC_18F)
@@ -50,7 +51,8 @@ int main(void)
 #endif
 {	// JTR N/A unsigned char c;
 
-CDC_trf_state = 0;
+    CDC_trf_state = 0;
+    arch_startup_init();
 	init();			// These Two Init functions really can be rolled into one.
 	initCDC();		// JTR this function has been highly modified It no longer sets up CDC endpoints.
 
@@ -106,8 +108,8 @@ void init(void)
 
 	#if defined(__18F2450) || defined(__18F2550) || defined(__18F4450) || defined(__18F4550)
 		//disable some defaults
-	ADCON1 |= 0b1111;   	//all pins digital
-	CVRCON=0b00000000;
+	ADCON1 |= 0x0f;   	//all pins digital
+	CVRCON=0x00;
 	#endif
 
 	#if defined(__IS_18J)   // JTR additions for 18FxxJ See PICUSB.h
@@ -123,7 +125,7 @@ void init(void)
             #else
 
                 ANCON0 = 0xFF;                  // Default all pins to digital
-                ANCON1 = 0b00011111;// updated for lower power consumption. See datasheet page 343
+                ANCON1 = 0x1f;// updated for lower power consumption. See datasheet page 343
             #endif
 
 		//make sure everything is input (should be on startup, but just in case)
@@ -155,8 +157,8 @@ void init(void)
 #if defined(BPv4)
 	CORCONbits.PSV = 1;	// JTR PIC24 fixup ?? PSV not being initialized. May have been done by c_init though.
 	PSVPAG = 0;			//
-        CLKDIV = 0x0000;        // Set PLL prescaler (1:1)
-        AD1PCFGL = 0x7FD8;	//BPv4 has five analog pins b0, b1, b2, b5, b15
+    CLKDIV = 0x0000;    // Set PLL prescaler (1:1)
+    AD1PCFGL = 0x7FD8;	//BPv4 has five analog pins b0, b1, b2, b5, b15
 	AD1PCFGH = 0x2;
 	TRISB = 0x8027;		// JTR Analog pins as inputs.
 	TRISC = 0x0000;
@@ -213,28 +215,28 @@ void mylow_isr(void);
 // not setup correctly. Currently they have been setup to use high priority mode
 // and the interrupt vector is @ 0x0008. Priority interrupts are enabled
 // This can be modified to suit users requirements.
- #define USING_BOOTLOADER
+#define USING_BOOTLOADER
 
- #if defined(USING_BOOTLOADER)
-    #define REMAPPED_RESET_VECTOR_ADDRESS           0x1000
-    #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS  0x1008
-    #define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS   0x1018
- #else
-    #define REMAPPED_RESET_VECTOR_ADDRESS           0x0000
-    #define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS  0x0008
-    #define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS   0x0018
- #endif
+#define REMAPPED_RESET_VECTOR_ADDRESS           0x1000
+#define REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS  0x1008
+#define REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS   0x1018
 
- #pragma code REMAPPED_HIGH_INTERRUPT_VECTOR = REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS
+__code char __at REMAPPED_HIGH_INTERRUPT_VECTOR =
+                            REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS;
  void Remapped_High_ISR(void)
 	{
-	     _asm goto myhigh_isr _endasm
+	     _asm
+             goto myhigh_isr 
+         _endasm;
 	}
  
- #pragma code REMAPPED_LOW_INTERRUPT_VECTOR = REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS
+__code char __at REMAPPED_LOW_INTERRUPT_VECTOR =
+                            REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS;
  void Remapped_Low_ISR(void)
 	{
-	     _asm goto mylow_isr _endasm
+	     _asm
+             goto mylow_isr 
+         _endasm;
 	}
 
 #pragma code
@@ -244,7 +246,9 @@ void mylow_isr(void);
    #pragma code REMAPPED_RESET_VECTOR = REMAPPED_RESET_VECTOR_ADDRESS
    void _reset(void)
    {
-       _asm goto _startup _endasm
+       _asm
+           goto _startup
+       _endasm;
    }
 
     //Note: If this project is built to be used with bootloader  but then the output hex file is not programmed with
@@ -266,12 +270,16 @@ void mylow_isr(void);
 
     #pragma code HIGH_INTERRUPT_VECTOR = 0x08
     void High_ISR(void) {
-        _asm goto REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS _endasm
+        _asm
+            goto REMAPPED_HIGH_INTERRUPT_VECTOR_ADDRESS
+        _endasm;
     }
 
     #pragma code LOW_INTERRUPT_VECTOR = 0x18
     void Low_ISR(void) {
-        _asm goto REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS _endasm
+        _asm
+            goto REMAPPED_LOW_INTERRUPT_VECTOR_ADDRESS
+        _endasm;
     }
 
  #endif

@@ -18,11 +18,13 @@ uip:
 arch_pic16:
 	cd arch/pic16; make
 
-update_tags:
-	ctags -R .
+usbstack:
+	cd usbstack; make
+
 clean:
 	cd test/system; make clean
 	cd arch/pic16; make clean
+	cd usbstack; make clean
 	rm -f target.hex
 
 install:

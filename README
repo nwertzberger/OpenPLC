@@ -59,13 +59,22 @@ arch    - Architecture-specific functions (i.e. IO, Timers, etc.)
 ----------------------------------------------------------------------------
 INSTALLATION
 
-Currently, you are pretty on your own for this.  In order to assist in
-setting up the environment needed for development on this platform, a script
-is trying to be built that will automate all of the downloads you will need
-to set up.  Here is the list of things you will need:
+There is currently a setup-deb.sh file in this folder.  Look it over, In the
+event you are connected to the canonical repository, this should probably set
+you up.
 
-libusb-dev
-pk2cmd
-gputils
-sdcc <- i get this one from the repository, but it may not be necessary.
+----------------------------------------------------------------------------
+MODULE OVERVIEW
+----------------------------------------------------------------------------
+ARCH
+
+The arch module contains the hardware-specific controls needed to interface
+with the board.  It has subfolders containing the different supported
+architectures for the system.
+
+USBSTACK
+
+The Usbstack module is based on the Honken USB Stack. Look at
+DangerousPrototypes for more information. This has had to be severely
+modified in order to make it compile for our system.
 

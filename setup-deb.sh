@@ -6,8 +6,8 @@
 # This script does everything you need to set up OpenPLC for a debian-based
 # platform.
 
-echo "I'm going to jsut do my thing... You should look me over before you"
-echo "run me..."
+echo I\'m going to jsut do my thing... You should have looked me over before
+echo you ran me...
 
 # Pre-req's
 apt-get install gputils

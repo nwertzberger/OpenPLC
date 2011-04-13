@@ -481,17 +481,6 @@ typedef unsigned int usb_uep_t; // JTR PIC24 fixup potentially ?? changed from c
 #define USB_USTAT2BD(X)                         ( (X)/8 )  //JTR PIC24 fixups
 #define USB_CALC_BD(ep, dir, sync)              ( 2*(ep)+(dir) )
 
-// JTR TODO these values may need to be changed for the PIC24
-//#elif USB_PP_BUF_MODE == 1
-//#define USB_USTAT2BD(X)                       ( ((X)>2)? (X)/4+1 : (X)/2 )
-//#define USB_CALC_BD(ep, dir, sync)            ( ((ep)==0 && (dir)==0)? (sync) : 2*(ep)+(dir) )
-//#elif USB_PP_BUF_MODE == 2              
-//#define USB_USTAT2BD(X)                       ( (X)/2 )
-//#define USB_CALC_BD(ep, dir, sync)            ( 4*(ep)+2*(dir)+(sync) )
-//#elif USB_PP_BUF_MODE == 3
-//#define USB_USTAT2BD(X)                       ( ((X)>4)? (X)/2-2 : (X)/4 )
-//#define USB_CALC_BD(ep, dir, sync)            ( ((ep)==0)? (dir) : 4*(ep)+2*(dir)+(sync)-2 )
-
 #else
 #error "USB_PP_BUF_MODE outside scope."
 #endif
