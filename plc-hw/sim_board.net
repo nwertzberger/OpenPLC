@@ -14,10 +14,9 @@ unnamed_net56	U12-5 UP4-8 UP4-9
 unnamed_net55	CONN4-7 UP4-10 
 unnamed_net54	U12-7 UP4-14 UP4-13 
 unnamed_net53	CONN4-8 UP4-12 
-Vusb	D20-1 
 unnamed_net52	L2-1 L1-1 C5-1 R4-1 
 unnamed_net51	D1-1 D2-1 CONN1-1 
-unnamed_net50	D20-2 L2-2 C3-1 U5-1 
+unnamed_net50	L2-2 C3-1 U5-1 
 unnamed_net49	R4-2 R3-2 U4-5 
 unnamed_net48	D2-2 R5-2 C4-1 U4-6 
 unnamed_net47	C6-2 U4-3 
@@ -58,12 +57,12 @@ unnamed_net17	R12-9 U9-7 UP2-13
 Vhighcc	UP3-4 UP4-4 D1-2 UP1-4 UP2-4 
 unnamed_net16	CONN3-2 U9-6 UP2-8 
 unnamed_net15	R12-8 U9-5 UP2-9 
-unnamed_net14	D9-2 R16-7 
-unnamed_net13	D8-2 R16-6 
-unnamed_net12	D7-2 R16-5 
-unnamed_net11	D6-2 R16-4 
-unnamed_net10	D5-2 R16-3 
-unnamed_net9	D4-2 R16-2 
+unnamed_net14	D4-2 R16-7 
+unnamed_net13	D5-2 R16-6 
+unnamed_net12	D6-2 R16-5 
+unnamed_net11	D7-2 R16-4 
+unnamed_net10	D8-2 R16-3 
+unnamed_net9	D9-2 R16-2 
 unnamed_net8	D9-1 U13-16 
 unnamed_net7	D8-1 U13-15 
 unnamed_net6	D7-1 U13-14 
@@ -76,19 +75,19 @@ DOUT3	UP2-10 U13-26
 DOUT2	UP2-12 U13-25 
 DOUT1	UP2-3 U13-24 
 DOUT0	UP2-5 U13-23 
-AOUT3	U10-7 U13-22 
-AOUT2	U10-5 U13-21 
-AOUT1	U10-3 U13-20 
-AOUT0	U10-1 U13-19 
+AOUT0	U10-1 U13-22 
+AOUT1	U10-3 U13-21 
+AOUT2	U10-5 U13-20 
+AOUT3	U10-7 U13-19 
 _EINT	U3-4 U13-42 
-AIN7	R13-9 U12-8 U13-30 
-AIN6	R13-8 U12-6 U13-31 
-AIN5	R13-7 U12-4 U13-32 
-AIN4	R13-6 U12-2 U13-33 
-AIN3	R13-5 U11-8 U13-34 
-AIN2	R13-4 U11-6 U13-35 
-AIN1	R13-3 U11-4 U13-36 
-AIN0	R13-2 U11-2 U13-37 
+AIN0	R13-2 U11-2 U13-30 
+AIN1	R13-3 U11-4 U13-31 
+AIN2	R13-4 U11-6 U13-32 
+AIN3	R13-5 U11-8 U13-33 
+AIN4	R13-6 U12-2 U13-34 
+AIN5	R13-7 U12-4 U13-35 
+AIN6	R13-8 U12-6 U13-36 
+AIN7	R13-9 U12-8 U13-37 
 SCK	U3-8 J2-2 U13-3 
 SO	U3-6 J2-1 U13-2 
 SI	U3-7 J2-5 U13-1 

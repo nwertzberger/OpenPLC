@@ -85,10 +85,6 @@ ChangePinName(UP4, 14, 14)
 ChangePinName(UP4, 13, 13)
 ChangePinName(UP4, 12, 12)
 
-# Start of element D20
-ChangePinName(D20, 2, 2)
-ChangePinName(D20, 1, 1)
-
 # Start of element D1
 ChangePinName(D1, 2, 2)
 ChangePinName(D1, 1, 1)
