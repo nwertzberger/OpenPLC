@@ -1,9 +1,7 @@
-pcb: project schematics packages/* symbols/*
-	gsch2pcb -v -v $<
-
-schematics: sim_uc.sch sim_phys_out.sch sim_ether.sch sim_pwr.sch \
-			sim_phys_in.sch
+sim_board: sim_uc.sch sim_phys_out.sch sim_ether.sch sim_pwr.sch \
+			sim_phys_in.sch packages/* symbols/*
 	refdes_renum $^
+	gsch2pcb -v -v $^ -o $@
 
 clean:
 	rm -f *~ *- *.backup *.new.pcb *.png *.bak *.gbr *.cnc

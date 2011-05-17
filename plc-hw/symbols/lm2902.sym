@@ -59,4 +59,4 @@ LM2902
 T 2200 1900 5 10 0 0 0 0 1
 footprint=SSOP14
 T 200 900 8 10 1 1 0 0 1
-refdes=U?
+refdes=U19
