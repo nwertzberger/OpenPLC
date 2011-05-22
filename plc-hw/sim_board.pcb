@@ -1,5 +1,5 @@
 # release: pcb 20091103
-# date:    Sat May 21 13:36:35 2011
+# date:    Sun May 22 10:47:26 2011
 # user:    nwertzberger (Nicholas Wertzberger,,,)
 # host:    Sherlock
 
@@ -931,7 +931,7 @@ Element["" "QFN44_7_EP" "U13" "" 211500 63000 16813 -15763 3 100 ""]
 	Pad[11771 -5905 14212 -5905 1102 2000 1402 "PB2/AIN0/INT2/PCINT10" "42" "square,octagon,edge2"]
 	Pad[11771 -7874 14212 -7874 1102 2000 1402 "PB3/AIN1/OC0A/PCINT11" "43" "square,octagon,edge2"]
 	Pad[11771 -9842 14212 -9842 1102 2000 1402 "PB4/_SS_/OC0B/PCINT12" "44" "square,octagon,edge2"]
-	Pad[0 0 0 0 18503 0 18903 "45" "45" "square,warn"]
+	Pad[0 0 0 0 18503 0 18903 "45" "45" "square"]
 	ElementLine [15763 -15763 17263 -17263 1000]
 	ElementLine [-15763 -15763 -15763 15763 1000]
 	ElementLine [-15763 -15763 15763 -15763 1000]
