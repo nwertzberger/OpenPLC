@@ -1,0 +1,2 @@
+arch_startup.rel: arch_startup.c ../../include/arch_startup.h
+arch_io.rel: arch_io.c ../../include/arch_io.h ../../include/core_debug.h
