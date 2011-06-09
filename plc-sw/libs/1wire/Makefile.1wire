@@ -1,0 +1,1 @@
+LIB_SOURCES += crc8.c ds18x20.c onewire.c

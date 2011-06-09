@@ -1,0 +1,140 @@
+#!/usr/bin/perl -w
+use strict;
+
+my %G_opts = ( sortby => "name", verbose => 0 );
+
+my @opts = @ARGV; @ARGV = ();
+while (@opts) {
+  my $opt = shift @opts;
+  if( $opt !~ /^-/ ) { push( @ARGV, $opt ); }
+  elsif( $opt eq "-v" ) { $G_opts{verbose} = 1; }
+  elsif( $opt eq "-n" ) { $G_opts{sortby} = "name"; }
+  elsif( $opt eq "-s" ) { $G_opts{sortby} = "size"; }
+  else { die "Unknown command line option $opt\n"; }
+}
+
+my $SortKeys = $G_opts{sortby} eq "name" ? \&keysbyname : \&keysbysize;
+
+if( @ARGV < 1 ) {
+  print "usage: module_memory_usage (-v|-s|-n) [exe] (module) (module) (...)\n";
+  exit 0;
+}
+
+my $exe = shift @ARGV;
+my %modules = map { $_ => 1 } @ARGV;
+
+my %segs = ();
+
+my $filetypecmd = "avr-objdump -f \"$exe\"";
+open( FH, "$filetypecmd |" ) or die "ERROR, $filetypecmd failed: $!\n";
+
+my $cmd = "avr-objdump -x \"$exe\"";
+my $binary = "Unknown";
+
+# Assumption: if avr-objdump doesn't recognize the arch, it's msp430.
+
+if ( eof(FH) ) {
+    die "module_memory_usage: $exe: No such file or directory\n";
+}
+
+while( <FH> ) {
+    if ( /UNKNOWN!/ ) {
+	$cmd = "msp430-objdump -x \"$exe\"";
+	$binary = "MSP430";
+    }
+}
+if ($binary eq "Unknown") {
+    $binary = "AVR";
+}
+
+open( FH, "$cmd |" ) or die "ERROR, $cmd failed: $!\n";
+
+my $state = "begin";
+
+while( <FH> ) {
+    my ($segment, $size, $name, $seg);
+
+    if ( /Sections:/ ) {
+	$state = "sections";
+    } elsif ( $state eq "sections" && /SYMBOL TABLE:/ ) {
+	$state = "symtab";
+    }
+
+    if ($state eq "sections") {
+
+	if ( /^\s+\S+\s+\.(bss|data|text)\s+(\S+).+/ ) {
+	    ($segment,$size) = ($1, $2);
+	    $segs{$segment} = { segtotal => 0, total => {}, vars => {} } unless exists $segs{$segment};   
+	    $seg = $segs{$segment};
+	    $seg->{segtotal} = hex $size;
+	}
+
+    } elsif ($state eq "symtab") {
+
+	if( /^\S+\s+\w+\s+\w+\s+\.(bss|data|text)\s+(\S+)\s+(\S+)/ ) {
+	    ($segment,$size,$name) = ($1,$2,$3);
+	    (my $module = $name) =~ s/\$.*//;
+	    $segs{$segment} = { total => {}, vars => {} } unless exists $segs{$segment};
+	    $seg = $segs{$segment};
+	    $seg->{total}->{$module} += hex $size;
+	    if( $name =~ /\$(.*)/ ) {
+		$seg->{vars}->{$module} = {} unless exists $seg->{vars}->{$module};
+		$seg->{vars}->{$module}->{$1} += hex $size;
+	    }
+	}
+    }
+}
+
+close( FH );
+
+my $n = 0;
+my %titles = ( bss => "Heap RAM", text => "Program ROM", data => "Constants RAM" );
+
+print "Module Memory Usage: $binary binary file \"$exe\"\n";
+print "\n";
+
+for my $seg (qw(text data bss)) {
+
+  my $segtotal = 0; 
+  my $total = $segs{$seg}->{total};
+  my $vars = $segs{$seg}->{vars};
+
+  if (defined $segs{$seg}->{segtotal}) {
+      $segtotal = $segs{$seg}->{segtotal};
+  }
+
+  my $sum = 0;
+  for my $v (values %$total) { $sum += $v; }
+  my $wasted = $segtotal - $sum;
+
+  print "\n" if $n++;
+
+  printf("%5d %s", $segtotal, "bytes of $titles{$seg} allocated\n");
+  printf("%5d %s", $sum, "bytes of $titles{$seg} used\n");
+  printf("%5d %s", $wasted, "byte" . ($wasted != 1 ? "s" : "") . " of $titles{$seg} wasted\n");
+  
+  print "usage by "
+      . (%modules?"selected ":"")
+      . "module:\n";
+
+  for my $module (&$SortKeys($total)) {
+    next if %modules && not $modules{$module};
+    printf( "%8d  %s\n", $total->{$module}, $module ) if $total->{$module};
+    if( $G_opts{verbose} ) {
+      for my $var (&$SortKeys($vars->{$module})) {
+	printf( "%8s >%6d  %s\n", "", $vars->{$module}->{$var}, $var );
+      }
+    }
+  }
+}
+
+
+sub keysbyname {
+  my $h = shift;
+  return sort keys %$h;
+}
+
+sub keysbysize {
+  my $h = shift;
+  return sort {$h->{$a} <=> $h->{$b} || $a cmp $b} keys %$h;
+}

@@ -1,0 +1,22 @@
+
+THANK YOU!!!
+
+Okay so this code was downloaded from:
+http://www.cl.cam.ac.uk/teaching/1011/P31/lib/
+On April 16, 2011
+
+I also found almost the same code on avrfreaks, http://tom-itx.dyndns.org:81/~webpage/how_to/atmega168/mega168_rs232_index.php, and a few other pages.
+
+So, who was / is the author... ?  Don't know, it's example code published all over the net.
+
+To use this you need to init the console speed.
+
+Have a look here for how to do this:
+http://www.avrfreaks.net/index.php?name=PNphpBB2&file=viewtopic&t=70673
+Note this:
+http://www.chip45.com/download/ATxmega_Baud_Rate_Calculator_v1.0.xls.zip
+
+This xls is included here
+
+
+Oh, use software flow control

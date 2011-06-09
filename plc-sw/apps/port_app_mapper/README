@@ -1,0 +1,22 @@
+
+What is this?
+-------------
+It's an app that will map the incomming network port and protocol to the proper app.
+Sort of like inetd on unix.
+Each app manages it's own state information and the app state data in the network connection is replaced with an uint8_t which notes which state structure for the given app is in use.
+This app, the mapper then is the only network app which the uip stack calls.
+This app when called, maps the packet the real app via the source or destination port numbers.
+
+webservers == dest port 80
+webclients == source port 80
+etc
+
+Where did this idea come from?
+------------------------------
+The basic idea for writing this version came from looking at code Jan Kleis Nielsen <jkn@air-port.dk> wrote to solve this issue
+
+Why did you write this?
+-----------------------
+
+Fun, and I thought I might need this type of thing one day and the uip stack has this little design issue where it expects you to have only one network app for UDP and one for TCP.  I like a uniform system which works for everyone... for the most part. :-)  That's one of the ways things scale.
+

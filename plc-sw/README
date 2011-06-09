@@ -1,0 +1,19 @@
+OpenPLC is based on the AVR-uIP port done at http://code.google.com/p/avr-uip/.
+
+OpenPLC is broken up into two separate projects:
+
+HILSim - a hardware-in-the-loop simulator
+OpenPLC - a PLC that is based completely on open-source software.
+
+It is recommended that you read the README in the doc section. This area is
+a hodgepodge of original documentation and updated docs based on what OpenPLC does
+differently.
+
+The directory structure look as follows:
+
+apps/     - Example applications
+doc/      - Documentation
+libs/     - Library code used by some applications and dirvers
+uip/      - uIP TCP/IP stack code
+drivers/  - Drivers for various hardware
+projects/ - different projects that take advantage of the rest of the code.

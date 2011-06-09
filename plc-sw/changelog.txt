@@ -1,0 +1,4 @@
+* Starting with project stolen from the uIP-AVR port
+
+  It didn't make much sense to do it any other way.  There is a defined
+  format used by this project, and I like it.

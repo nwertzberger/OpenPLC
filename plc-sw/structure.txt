@@ -1,0 +1,84 @@
+This uip port can be compiled with GNU make, it's NOT configured with GNU autotools (don't if that's 
+possible, if so it's probably a thing we want to do).
+
+___________________________________________________________________________________________________________
+
+	Custom project
+___________________________________________________________________________________________________________
+Each project has a project specific directory. For instance ./atmega/ which is the generic atmega port.
+You should create an empty suddirectory in the ./projects/ directory, and copy the generic port to this
+directory for modification. You must place all your project specific files the your project specific 
+directory. Create a project specific directory for each project you have.
+
+A Specific directory contains:
+ - Makefile, that includes ./Makefile.include and sets following environment variables:
+    * MCU	: Chip choice given to avr-gcc
+    * CHIP	: Chip choice for avrdude
+    * NAME	: Name of the project
+    * APPS	: Space seperated list of apps to compile in
+    * DEVS	: Space seperated list of drivers to compile in
+    * LIBS	: Space seperated list of libraries to compile in
+    * $(NAME)_SOURCES :	Space seperated list of project specific sources, these are main.c and clock-arch.c
+						+ any other files needed to initialize you specific project/board. For instance
+						interrupt rutines for driver-hacks or who knows.
+ - main.c			Main-loop implementation, fully generic and working examples are available.
+ - clock-arch.c		Clock implementation, generic and working examples are available.
+ - global-conf.h	Includes relevant config files and defines project specific configurations.
+ - Various configurations files for apps, drivers, libraries and uip.
+
+___________________________________________________________________________________________________________
+
+	Custom application
+___________________________________________________________________________________________________________
+You can create custom apps and compile them into your project. Do this by creating a subdirectory in apps,
+name the directory after your app. Inside the directory you must place all apps specific sources and
+headers. The directory must also include a Makefile.$(APPNAME). This Makefile must append all the app
+sources to the environment variable APP_SOURCES. The Makefile, may also append dependent drivers to DEVS
+and libraries to LIBS.
+
+NOTE:	apps should not include hardware related features, these should be placed in a dependent driver
+		and, if possible, interfaced through an interface in the ./drivers/interfaces/ directory.
+		Also apps should not contain large generic software algorithms like SHA1 or similar, these should
+		be placed in a dependent library and, if possible, interface through an interface in the directory
+		./libs/interfaces/.
+
+___________________________________________________________________________________________________________
+
+	Custom driver
+___________________________________________________________________________________________________________
+You can create custom driver and compile them into your project. Do this by creating a subdirectory in
+drivers, name the directory after your driver. Inside the directory you must place all driver specific
+sources and headers. The directory must also include a Makefile.$(DEVNAME). This Makefile must append all
+the driver sources to the environment variable DEV_SOURCES. The Makefile, may also append dependent
+libraries to LIBS. However it may NOT append depend on apps and modify the APPS variable.
+
+NOTE:	drivers should only implement hardware related features and if possible share a generic interface
+		defined in ./drivers/interfaces/. Configurations of drivers should NOT happen in a header file in
+		the driver specific directory. Instead a default configuration should be defined here between 
+		preprocessor ifdefs. This default configuration file should be copied the project specific diretory
+		and altered there, also renamed to avoid preprocessor conflicts. Drivers should include
+		global-conf.h at the top of each files as this contains project specific configurations.
+
+___________________________________________________________________________________________________________
+
+	Custom libraries
+___________________________________________________________________________________________________________
+You can create custom library and compile them into your project. Do this by creating a subdirectory in
+libs, name the directory after your library. Inside the directory you must place all library specific
+sources and headers. The directory must also include a Makefile.$(LIBNAME). This Makefile must append all
+the library sources to the environment variable LIB_SOURCES. The Makefile may NOT append dependent drivers
+to DEVS and libraries to LIBS.
+
+NOTE:	Libraries should only implement software algorithms, and not uip-apps or hardware related features.
+		Examples of software libraries could be SHA1, MD5, FAT, CRC, mimetype guessers and image libraries.
+		If possible related libraries should implement a common interface, defined in ./libs/interfaces/.
+
+___________________________________________________________________________________________________________
+
+	Dependencies
+___________________________________________________________________________________________________________
+
+As can be read from the text above, apps may depend on drivers and libraries. Whereas drivers may only
+depend on libraries. And libraries may not depend on either apps or drivers.
+
+

@@ -1,0 +1,4 @@
+%!: /header.html
+<h1>The Output of a CGI script:</h1><br>
+%! hello
+%!: /footer.html

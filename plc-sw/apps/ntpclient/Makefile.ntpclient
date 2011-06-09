@@ -1,0 +1,1 @@
+APP_SOURCES += ntpclient.c timer.c
