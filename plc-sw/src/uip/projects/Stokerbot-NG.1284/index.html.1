@@ -1,0 +1,63 @@
+<html>        
+<head>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta http-equiv="Pragma" content="no-cache">
+</head>
+<body>
+<script language="Javascript">
+<!--
+  bn = navigator.appName;
+  bv = navigator.appVersion;
+  bv2 = bv.substring(0,3);
+  Browser = 0;
+  
+  if (parseInt(bv) > 3)
+  {
+     if (bn.indexOf("Netscape",0) != -1)
+     {
+        if (isNaN(parseInt(bv)) == false)
+        {
+           if (parseFloat(bv2) >= parseFloat("4.7"))
+           {Browser = 1;}
+        }
+     }
+     else
+     {
+        if (bn.indexOf("Microsoft Internet Explorer",0) != -1)
+        {
+           bf=bv.indexOf("MSIE");
+           if (bf != -1)
+           {
+              be=bv.indexOf(";",bf);
+              ver=bv.substring(bf+5,be);
+              if (parseInt(ver) >= 5)
+              {Browser = 2;}
+           }
+        }
+     }
+  }
+
+  if (Browser != 0)
+  {
+     var now, year, month, date, hours, minutes, seconds, timeValue;
+     now = new Date();
+     year = now.getYear();
+     if (Browser == 1)
+        year = year + 1900;
+     month = now.getMonth() + 1;
+     date = now.getDate();
+     hours = now.getHours();
+     minutes = now.getMinutes();
+     seconds = now.getSeconds();
+     timeValue = ((year < 10)? "0": "") + year;
+     timeValue += ((month < 10)? "-0": "-") + month;
+     timeValue += ((date < 10)? "-0": "-") + date;
+     timeValue += ((hours < 10)? " 0": " ") + hours;
+     timeValue += ((minutes < 10)?  ":0": ":") + minutes;
+     timeValue += ((seconds < 10)?  ":0": ":") + seconds;
+     location.href="top.htm?Currenttime="+timeValue;
+  }
+// -->
+</script>
+</body>
+</html>

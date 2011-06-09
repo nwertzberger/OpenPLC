@@ -1,0 +1,3 @@
+APP_SOURCES += telnetd.c shell.c memb.c
+
+LIBS+= memb

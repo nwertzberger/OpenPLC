@@ -1,0 +1,124 @@
+#!/usr/bin/perl
+
+$httpd_fs_dir = "httpd-fs";
+%cgi_names;   # a list of cgi function names
+
+open(OUTPUT, "> httpd-fsdata.c");
+
+# last arg is the dir name
+if ($#ARGV > -1)
+{
+    $httpd_fs_dir = $ARGV[$#ARGV];
+}
+
+
+chomp($starting_dir=`pwd`);
+chdir($httpd_fs_dir);
+
+opendir(DIR, ".");
+@files =  grep { !/^\./ && !/(CVS|~)/ } readdir(DIR);
+closedir(DIR);
+
+foreach $file (@files) {  
+   
+    if(-d $file && $file !~ /^\./) {
+	print "Processing directory $file\n";
+	opendir(DIR, $file);
+	@newfiles =  grep { !/^\./ && !/(CVS|~)/ } readdir(DIR);
+	closedir(DIR);
+	printf "Adding files @newfiles\n";
+	@files = (@files, map { $_ = "$file/$_" } @newfiles);
+	next;
+    }
+}
+
+print(OUTPUT "#include <avr/pgmspace.h>\n");
+
+foreach $file (@files) {
+    if(-f $file) {
+    $file_name = "$file";
+	
+	print "Adding file $file\n";
+	
+	open(FILE, $file) || die "Could not open file $file\n";
+
+	$file =~ s-^-/-;
+	$fvar = $file;
+	$fvar =~ s-/-_-g;
+	$fvar =~ s-\.-_-g;
+	# for AVR, add PROGMEM here, remove "unsigned" to fix compiler warning
+	print(OUTPUT "static const char data".$fvar."[] PROGMEM = {\n");
+	print(OUTPUT "\t/* $file */\n\t");
+	for($j = 0; $j < length($file); $j++) {
+	    printf(OUTPUT "%#02x, ", unpack("C", substr($file, $j, 1)));
+	}
+	printf(OUTPUT "0,\n");
+	
+	
+	$i = 0;        
+	while(read(FILE, $data, 1)) {
+	    if($i == 0) {
+		print(OUTPUT "\t");
+	    }
+	    printf(OUTPUT "%#02x, ", unpack("C", $data));
+	    $i++;
+	    if($i == 10) {
+		print(OUTPUT "\n");
+		$i = 0;
+	    }
+	}
+	print(OUTPUT "};\n\n");
+	close(FILE);
+	push(@fvars, $fvar);
+	push(@pfiles, $file);
+    }
+	# open the file and search for cgi functions
+    open(FILE, $file_name) || die "Could not open file $file\n";
+    while(<FILE>)
+    {
+        if( $_ =~ m/%!\s+(\S+)/ )
+        {  # save found cgi function names
+            $cgi_names{$1}=1;
+        }
+    }
+    close(FILE);
+
+}
+
+for($i = 0; $i < @fvars; $i++) {
+    $file = $pfiles[$i];
+    $fvar = $fvars[$i];
+
+    if($i == 0) {
+        $prevfile = "NULL";
+    } else {
+        $prevfile = "file" . $fvars[$i - 1];
+    }
+    print(OUTPUT "const struct httpd_fsdata_file file".$fvar."[] = {{$prevfile, data$fvar, ");
+    print(OUTPUT "data$fvar + ". (length($file) + 1) .", ");
+    print(OUTPUT "(int) sizeof(data$fvar) - ". (length($file) + 1) ."}};\n\n");
+}
+
+print(OUTPUT "#define HTTPD_FS_ROOT file$fvars[$i - 1]\n\n");
+print(OUTPUT "#define HTTPD_FS_NUMFILES $i\n");
+close(OUTPUT);
+
+# change back to the starting dir and generate the httpd-cgi-conf.h file
+chdir($starting_dir);
+open(OUTPUT, "> httpd-cgi-conf.h") || die "Could not open file httpd-cgi-conf.h\n";
+foreach $akey (keys %cgi_names)
+{
+    $orig_akey = $akey;
+    $akey = uc $akey;
+    if( $akey =~ m/-/ )
+    {
+        $akey_save = $akey;
+        $akey =~ s/-/_/g;
+        print "\nWARNING!!!!  cgi name $akey contains a dash '-'.  Converting to an underscore in order to generate a valid define for use in code ifdef";
+        print "\n\t $akey_save converted to $akey";
+        print "\n";
+    }
+    print(OUTPUT "#define ENABLE_CGI_$akey $orig_akey\n");
+    print(OUTPUT "#define ENABLE_CGI_" . $akey . "_LIST &" . $orig_akey . ",\n\n");
+}
+close(OUTPUT);

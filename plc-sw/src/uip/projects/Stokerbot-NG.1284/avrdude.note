@@ -1,0 +1,15 @@
+  920  avrdude -V -p m644p -c avrusb500 -B 2 -U eeprom:r:./mydata.eep:r
+  937  avrdude -V -p m644p -c avrusb500 -B 2 -U eeprom:r:./mydata.eep:r
+  943  avrdude -V -p m644p -c avrusb500 -B 2 -U eeprom:r:./mydata.eep:r
+  948  avrdude -V -p m644p -c avrusb500 -B 2 -U eeprom:r:./mydata.eep:r
+  955  avrdude -V -p m644p -c avrusb500 -B 2 -U eeprom:r:./mydata.eep:r
+ 1134  man avrdudue 
+ 1135  man avrdude 
+ 1136  avrdude --help 
+ 1139  avrdude -V -p m644p -c avrusb500 -B 2 -U eeprom:w:zeros.eep:r
+ 1141  avrdude -V -p m644p -c avrusb500 -B 2 -U eeprom:w:../projects/TuxGraphics.644/zeros.eep:r
+ 1249  history | grep avrdu
+ 1250  avrdude -V -p m644p -c avrusb500 -B 2 -U eeprom:r:./mydata.eep:r
+ 1252  avrdude -V -p m644p -c avrusb500 -B 2 -U eeprom:r:./mydata.eep:r
+ 1418  history |grep avrdu
+ 1419  history |grep avrdu > avrdude.note

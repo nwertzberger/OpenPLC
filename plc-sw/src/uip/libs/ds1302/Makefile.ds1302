@@ -1,0 +1,1 @@
+LIB_SOURCES += ds1302.c

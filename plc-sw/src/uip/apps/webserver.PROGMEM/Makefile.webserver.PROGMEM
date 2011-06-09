@@ -1,0 +1,28 @@
+APP_SOURCES += httpd.c http-strings.c httpd-fs.c httpd-cgi.c websrv_helper_functions.c
+LIBS += websrv_helper_functions
+
+
+################
+#
+# The following Makfile code is used to regenerate
+#   the httpdfs data files for each build
+#
+
+# if the developer wants a special dir then use it.
+# make sure the dir exists then strip its name off after
+ifdef HTTPD_FS_DIRNAME
+HTTPD_FS_DIR:=$(strip $(wildcard ${APPSDIR}/webserver.PROGMEM/${HTTPD_FS_DIRNAME}))
+HTTPD_FS_DIR:=$(strip $(notdir ${HTTPD_FS_DIR}))
+
+ifeq (${HTTPD_FS_DIR},)
+HTTPD_FS_DIR=httpd-fs
+endif
+
+HTTPD_DIR=$(strip ${APPSDIR}/webserver.PROGMEM)
+
+all ::
+	cd ${HTTPD_DIR} && perl makefsdata ${HTTPD_FS_DIR}
+
+load :: all
+
+endif # end - ifdef HTTPD_FS_DIRNAME

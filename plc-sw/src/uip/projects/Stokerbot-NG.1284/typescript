@@ -1,0 +1,77 @@
+Script started on Fri 25 Feb 2011 09:40:09 PM PST
+]0;qarce-dev@qarce-dev: ~/avr-uip/projects/Stokerbot-NG.1284.wqarce-dev@qarce-dev:~/avr-uip/projects/Stokerbot-NG.1284.w$ 
+]0;qarce-dev@qarce-dev: ~/avr-uip/projects/Stokerbot-NG.1284.wqarce-dev@qarce-dev:~/avr-uip/projects/Stokerbot-NG.1284.w$ make all
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -o ./obj/AVRUIP.out -Wl ./obj/analog.o ./obj/clock-arch.o ./obj/crc8.o ./obj/ds18x20.o ./obj/eeprom.o ./obj/enc28j60.o ./obj/http-strings.o ./obj/httpd-cgi.o ./obj/httpd-fs.o ./obj/httpd.o ./obj/main.o ./obj/network.o ./obj/onewire.o ./obj/psock.o ./obj/resolv.o ./obj/timer.o ./obj/uip.o ./obj/uip_arp.o ./obj/websrv_helper_functions.o
+./obj/resolv.o: In function `resolv_appcall':
+/home/qarce-dev/avr-uip/projects/Stokerbot-NG.1284.w/../..//apps/resolv/resolv.c:184: undefined reference to `resolv_found'
+/home/qarce-dev/avr-uip/projects/Stokerbot-NG.1284.w/../..//apps/resolv/resolv.c:315: undefined reference to `resolv_found'
+make: *** [AVRUIP.out] Error 1
+]0;qarce-dev@qarce-dev: ~/avr-uip/projects/Stokerbot-NG.1284.wqarce-dev@qarce-dev:~/avr-uip/projects/Stokerbot-NG.1284.w$ make clen[Kan
+rm -fr *.o *~ *core uip ./obj *.a
+]0;qarce-dev@qarce-dev: ~/avr-uip/projects/Stokerbot-NG.1284.wqarce-dev@qarce-dev:~/avr-uip/projects/Stokerbot-NG.1284.w$ make all
+mkdir -p obj/enc28j60
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//drivers/enc28j60/enc28j60.c -o obj/enc28j60.o
+mkdir -p obj/network
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//drivers/enc28j60/network.c -o obj/network.o
+mkdir -p obj/httpd
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//apps/webserver.PROGMEM/httpd.c -o obj/httpd.o
+../..//apps/webserver.PROGMEM/httpd.c: In function 'handle_script':
+../..//apps/webserver.PROGMEM/httpd.c:159: warning: passing argument 2 of 'httpd_cgi((const char *)s->scriptptr)' discards qualifiers from pointer target type
+../..//apps/webserver.PROGMEM/httpd.c:167: warning: assignment discards qualifiers from pointer target type
+../..//apps/webserver.PROGMEM/httpd.c: In function 'send_headers':
+../..//apps/webserver.PROGMEM/httpd.c:211: warning: 'save_len' may be used uninitialized in this function
+../..//apps/webserver.PROGMEM/httpd.c:210: warning: 'save_dptr' may be used uninitialized in this function
+mkdir -p obj/http-strings
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//apps/webserver.PROGMEM/http-strings.c -o obj/http-strings.o
+mkdir -p obj/httpd-fs
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//apps/webserver.PROGMEM/httpd-fs.c -o obj/httpd-fs.o
+mkdir -p obj/httpd-cgi
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//apps/webserver.PROGMEM/httpd-cgi.c -o obj/httpd-cgi.o
+../..//apps/webserver.PROGMEM/httpd-cgi.c:99: warning: initialization from incompatible pointer type
+../..//apps/webserver.PROGMEM/httpd-cgi.c:100: warning: initialization from incompatible pointer type
+mkdir -p obj/websrv_helper_functions
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//libs/websrv_helper_functions/websrv_helper_functions.c -o obj/websrv_helper_functions.o
+mkdir -p obj/resolv
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//apps/resolv/resolv.c -o obj/resolv.o
+../..//apps/resolv/resolv.c: In function 'resolv_query':
+../..//apps/resolv/resolv.c:354: warning: 'nameptr' may be used uninitialized in this function
+mkdir -p obj/crc8
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//libs/1wire/crc8.c -o obj/crc8.o
+mkdir -p obj/ds18x20
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//libs/1wire/ds18x20.c -o obj/ds18x20.o
+In file included from ../..//libs/1wire/ds18x20.c:24:
+../..//libs/1wire/onewire.h:27:3: warning: #warning | experimental multi-bus-mode is not tested for
+../..//libs/1wire/onewire.h:28:3: warning: #warning | frequencies below 1,84MHz - use OW_ONE_WIRE or
+../..//libs/1wire/onewire.h:29:3: warning: #warning | faster clock-source (i.e. internal 2MHz R/C-Osc.)
+mkdir -p obj/onewire
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//libs/1wire/onewire.c -o obj/onewire.o
+mkdir -p obj/analog
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//libs/analog/analog.c -o obj/analog.o
+mkdir -p obj/eeprom
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//libs/eeprom/eeprom.c -o obj/eeprom.o
+mkdir -p obj/main
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c main.c -o obj/main.o
+mkdir -p obj/clock-arch
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c clock-arch.c -o obj/clock-arch.o
+mkdir -p obj/uip
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//uip/uip.c -o obj/uip.o
+mkdir -p obj/uip_arp
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//uip/uip_arp.c -o obj/uip_arp.o
+../..//uip/uip_arp.c: In function 'uip_arp_update':
+../..//uip/uip_arp.c:160: warning: 'tabptr' may be used uninitialized in this function
+../..//uip/uip_arp.c: In function 'uip_arp_out':
+../..//uip/uip_arp.c:357: warning: 'tabptr' may be used uninitialized in this function
+mkdir -p obj/psock
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//uip/psock.c -o obj/psock.o
+../..//uip/psock.c: In function 'psock_send_P':
+../..//uip/psock.c:366: warning: pointer targets in assignment differ in signedness
+mkdir -p obj/timer
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -c ../..//uip/timer.c -o obj/timer.o
+avr-gcc -I. -Wall -mmcu=atmega1284p -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99  -I../..//apps/webserver.PROGMEM -I../..//apps/webclient.Stokerbot-NG -I../..//apps/resolv -I../..//drivers/enc28j60 -I../..//libs/misc -I../..//libs/1wire -I../..//libs/analog -I../..//libs/eeprom -I../..//libs/websrv_helper_functions -I../..//libs/avrlib-avrlib-conf -I../..//drivers/interfaces -I../..//libs/interfaces -I../..//uip -o ./obj/AVRUIP.out -Wl ./obj/analog.o ./obj/clock-arch.o ./obj/crc8.o ./obj/ds18x20.o ./obj/eeprom.o ./obj/enc28j60.o ./obj/http-strings.o ./obj/httpd-cgi.o ./obj/httpd-fs.o ./obj/httpd.o ./obj/main.o ./obj/network.o ./obj/onewire.o ./obj/psock.o ./obj/resolv.o ./obj/timer.o ./obj/uip.o ./obj/uip_arp.o ./obj/websrv_helper_functions.o
+./obj/resolv.o: In function `resolv_appcall':
+/home/qarce-dev/avr-uip/projects/Stokerbot-NG.1284.w/../..//apps/resolv/resolv.c:184: undefined reference to `resolv_found'
+/home/qarce-dev/avr-uip/projects/Stokerbot-NG.1284.w/../..//apps/resolv/resolv.c:315: undefined reference to `resolv_found'
+make: *** [AVRUIP.out] Error 1
+]0;qarce-dev@qarce-dev: ~/avr-uip/projects/Stokerbot-NG.1284.wqarce-dev@qarce-dev:~/avr-uip/projects/Stokerbot-NG.1284.w$ exit
+
+Script done on Fri 25 Feb 2011 09:40:20 PM PST

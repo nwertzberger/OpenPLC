@@ -1,0 +1,3 @@
+UIP_SOURCES += uip.c uip_arp.c psock.c timer.c 
+###  remove code compile we don't use
+#UIP_SOURCES += uip.c uip_arp.c uiplib.c psock.c timer.c uip-neighbor.c

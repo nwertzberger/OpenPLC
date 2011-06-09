@@ -1,0 +1,183 @@
+UNAME := $(shell uname)
+
+#CFLAGS += -save-temps
+
+INCLUDE_FLAGS += -I.
+
+LINT_OPT +=  -weak
+
+#Include makefiles, directories and CFLAGS for application
+ifdef APPS
+  APPDIRS = $(foreach APP, $(APPS), ${APPSDIR}/$(APP))
+  -include $(foreach APP, $(APPS), ${APPSDIR}/$(APP)/Makefile.$(APP))
+  INCLUDE_FLAGS += $(addprefix -I${APPSDIR}/,$(APPS))
+endif
+
+#Include makefiles, directories and CFLAGS for device drivers
+ifdef DEVS
+  DEVDIRS = $(foreach DEV, $(DEVS), ${DEVSDIR}/$(DEV))
+  -include $(foreach DEV, $(DEVS), ${DEVSDIR}/$(DEV)/Makefile.$(DEV))
+  INCLUDE_FLAGS += $(addprefix -I${DEVSDIR}/,$(DEVS))
+endif
+
+#Include makefiles, directories and CFLAGS for libraries
+ifdef LIBS
+  LIBDIRS = $(foreach LIB, $(LIBS), ${LIBSDIR}/$(LIB))
+  -include $(foreach LIB, $(LIBS), ${LIBSDIR}/$(LIB)/Makefile.$(LIB))
+  INCLUDE_FLAGS += $(addprefix -I${LIBSDIR}/,$(LIBS))
+endif
+
+#Search for headerfiles in interfaces directories and uip dir
+INCLUDE_FLAGS += -I$(IDEVDIR) -I$(ILIBDIR) -I$(UIPDIR)
+
+#Add the Include search path flags to the CFLAGS
+CFLAGS += $(INCLUDE_FLAGS)
+
+#Define uip sources
+-include $(UIPDIR)/Makefile.uip
+
+#Define dependency compiler
+ifndef CCDEP
+  CCDEP = $(CC)
+endif
+
+#Define dependency flags
+ifndef CCDEPCFLAGS
+  CCDEPCFLAGS = $(CFLAGS)
+endif
+
+#Define object directory
+ifndef OBJECTDIR
+  OBJECTDIR = obj
+endif
+
+#Create object directory if needed
+ifeq (${wildcard $(OBJECTDIR)},)
+  DUMMY := ${shell mkdir $(OBJECTDIR)}
+endif
+
+#Define where to search for source files
+vpath %.c . $(UIPDIR) $(APPDIRS) $(DEVDIRS) $(LIBDIRS)
+
+#Rule for make all
+all:: $(NAME).hex
+
+#Define a genetic rule for building an object file
+$(OBJECTDIR)/%.o: %.c
+	mkdir -p $(basename $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+#Define a genetic rule for building a dependency file 
+$(OBJECTDIR)/%.d: %.c
+	@set -e; rm -f $@; \
+	$(CCDEP) -MM $(CCDEPCFLAGS) $< > $@.$$$$; \
+	sed 's,\($*\)\.o[ :]*,$(OBJECTDIR)/\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
+
+#Define a genetic rule for building all uip object files
+uip_OBJECTS: ${addprefix $(OBJECTDIR)/, $(UIP_SOURCES:.c=.o)}
+
+#Define a genetic rule for building all application object files
+app_OBJECTS: ${addprefix $(OBJECTDIR)/, $(APP_SOURCES:.c=.o)}
+
+#Define a genetic rule for building all library object files
+lib_OBJECTS: ${addprefix $(OBJECTDIR)/, $(LIB_SOURCES:.c=.o)}
+
+#Define a genetic rule for building all driver object files
+dev_OBJECTS: ${addprefix $(OBJECTDIR)/, $(DEV_SOURCES:.c=.o)}
+
+#Define a genetic rule for building all project object files
+$(NAME)_OBJECTS: ${addprefix $(OBJECTDIR)/, $($(NAME)_SOURCES:.c=.o)}
+
+#Variable for all sources (remove dups via sort)
+ALL_SOURCES = $(sort $(APP_SOURCES) $(UIP_SOURCES) $(DEV_SOURCES) $($(NAME)_SOURCES) $(LIB_SOURCES))
+
+#Rule for building the output files
+$(NAME).out: dev_OBJECTS app_OBJECTS lib_OBJECTS $(NAME)_OBJECTS uip_OBJECTS
+	$(CC) $(CFLAGS) -o $(OBJECTDIR)/$(NAME).out -Wl $(sort ${addprefix $(OBJECTDIR)/, $(ALL_SOURCES:.c=.o)})
+
+#Rule for building hex file
+$(NAME).hex: $(NAME).out
+	$(OBJCOPY) -R .eeprom -O ihex $(OBJECTDIR)/$(NAME).out $(OBJECTDIR)/$(NAME).hex
+ifeq ($(UNAME), Linux)
+	avr-size $(OBJECTDIR)/$(NAME).out
+else
+	avr-size -C --mcu=$(MCU) $(OBJECTDIR)/$(NAME).out
+endif
+
+#Loads without verifying
+load:: $(NAME).hex
+	set -x
+ifeq ($(UNAME), Linux)
+	avrdude -V -p $(CHIP) -c $(PROGRAMMER) -e -B 2 -U flash:w:$(OBJECTDIR)/$(NAME).hex
+else
+	Stk500.exe -d$(MCU) -e -if$(OBJECTDIR)/$(NAME).hex -pf -cUSB
+endif 
+	set +x
+
+#Loads with verification
+loadcheck:: $(NAME).hex
+	set -x
+ifeq ($(UNAME), Linux)
+	avrdude -p $(CHIP) -c $(PROGRAMMER) -e -B 2 -U flash:w:$(OBJECTDIR)/$(NAME).hex
+else
+	$(error "HMM.. what now... ")
+endif
+	set +x
+
+#Rules for burning fuses
+fuses::
+	set -x
+ifeq ($(UNAME), Linux)
+	avrdude -p $(CHIP) -c $(PROGRAMMER) -u -v -U lfuse:w:$(LFUSE):m
+	avrdude -p $(CHIP) -c $(PROGRAMMER) -u -v -U hfuse:w:$(HFUSE):m
+else
+	$(error "HMM.. what now... ")
+endif
+	set +x
+
+#Rules for reading fuses
+readfuses::
+	set -x
+ifeq ($(UNAME), Linux)
+	avrdude -p $(CHIP) -c $(PROGRAMMER) -u -v -U lfuse:r:read-lfuse.hex:h
+	avrdude -p $(CHIP) -c $(PROGRAMMER) -u -v -U hfuse:r:read-hfuse.hex:h
+else
+	$(error "HMM.. what now... ")
+endif
+	set +x
+
+#clean up
+clean::
+	rm -fr *.o *~ *core uip $(OBJECTDIR) *.a \
+	$(ALL_SOURCES:.c=.i) \
+	$(ALL_SOURCES:.c=.s) 
+
+#Rule to check code via lint
+ifeq ($(LINT),)
+lint::
+	$(error "ERROR: could not find lint tool to no lint support")
+
+else
+lint:: $(ALL_SOURCES)
+ifeq ($(AVR_ARCH),)
+	$(error "ERROR: what a pain... need to automate this.  Please define your gcc arch such AVR_ARCH=\"__AVR_ATmega644__\"")
+endif
+ifeq ($(AVR_INCLUDE),)
+	$(error "ERROR: To use lint you must define AVR_INCLUDE to point to your cross compiler header area") 
+else
+	$(LINT) $(LINT_OPT) -D$(AVR_ARCH) -I$(AVR_INCLUDE) $(INCLUDE_FLAGS) $+
+endif
+endif # end of if we have lint
+
+#Clean the dependency files if this is required command
+ifneq ($(MAKECMDGOALS),clean)
+-include $(addprefix $(OBJECTDIR)/,$(UIP_SOURCES:.c=.d) \
+                                   $(APP_SOURCES:.c=.d) \
+                                   $(LIB_SOURCES:.c=.d) \
+                                   $(DEV_SOURCES:.c=.d))
+endif
+
+#display help file
+help::
+	echo "Somebody please write a help page for this makefile";

@@ -1,0 +1,89 @@
+########################## Project specific configuration #########################
+#Options in this section should be copied to your project specific directory
+#
+#Microprossor choice, for avr-gcc
+#MCU	= atmega644
+#
+#Microprossor choice, for avrdude
+#CHIP	= m644	#See 'man avrdude', devices are listed under the Options section
+#
+#Project name
+#NAME	= <should be space seperated>
+#
+#Included applications
+#APPS	= <should be space seperated>
+#
+#Included libraries
+#LIBS	= <should be space seperated> 
+#
+#Included drivers
+#DEVS	= <should be space seperated> 
+#
+#Low fuse
+#LFUSE	= 0x62
+#
+#High fuse
+#HFUSE	= 0xDF
+
+############################ Programmer configuration #############################
+#Most of these options should probably be stored in a user specific makefile
+
+#TODO: Programmer configuration for avrdude
+
+#Define programmer used
+ifndef $(PROGRAMMER)
+	PROGRAMMER	= avrusb500
+endif
+
+############################# Compiler configuration ##############################
+
+#Compiler selection
+CC		= avr-gcc
+
+#check if we have a C lint tool
+LINT=
+
+FINDLINT:=$(shell which lint)
+
+ifeq ($(FINDLINT),)
+FINDLINT:=$(shell which splint)
+endif
+
+ifneq ($(FINDLINT),)
+LINT	= $(FINDLINT)
+endif
+
+#Compiler flags
+ifndef CFLAGS
+  CFLAGS	= -Wall -mmcu=$(MCU) -g -fpack-struct -Os -funsigned-char -funsigned-bitfields -mcall-prologues -Wstrict-prototypes -std=gnu99
+endif 
+
+#Object translator
+OBJCOPY	= avr-objcopy
+
+############################# Directory configuration #############################
+
+ifndef TOPLEVEL
+	TOPLEVEL = ../../
+endif
+
+#directory for object files
+OBJECTDIR 	= ./obj
+
+#directory for libraries
+LIBSDIR 	= $(TOPLEVEL)/libs
+
+#directory for device drivers
+DEVSDIR 	= $(TOPLEVEL)/drivers
+
+#directory for applications
+APPSDIR 	= $(TOPLEVEL)/apps
+
+#directory of uip
+UIPDIR		= $(TOPLEVEL)/uip
+
+#interfaces directory for drivers
+IDEVDIR		= $(TOPLEVEL)/drivers/interfaces
+
+#interfaces directory for libraries
+ILIBDIR		= $(TOPLEVEL)/libs/interfaces
