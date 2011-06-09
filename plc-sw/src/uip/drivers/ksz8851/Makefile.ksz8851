@@ -1,1 +1,0 @@
-DEV_SOURCES +=	ksz8851.c network.c
