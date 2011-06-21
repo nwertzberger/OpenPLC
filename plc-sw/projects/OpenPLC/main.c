@@ -44,13 +44,14 @@ struct timer dhcp_timer;
 int main(void)
 {
     /* Disable watchdog if enabled by bootloader/fuses */
+	led_conf();
+    led_on(0);
     MCUSR &= ~(1 << WDRF);
     wdt_disable();
-// Note: make the following call in code to reset device
-// wdt_enable(WDTO_500MS); // reset in 2 seconds - requires #include <avr/wdt.h>
-	led_conf();
 
+    led_on(1);
 	network_init();
+    led_on(2);
 
 	int i;
 	uip_ipaddr_t ipaddr;
@@ -60,13 +61,12 @@ int main(void)
 
 	timer_set(&periodic_timer, CLOCK_SECOND / 2);
 	timer_set(&arp_timer, CLOCK_SECOND * 10);
+    led_on(3);
 
-#ifdef DHCP_DEBUG
-    led_low();
-#endif
 	uip_init();
     // must be done or sometimes arp doesn't work
     uip_arp_init();
+    led_on(4);
 	
     _enable_dhcp=eeprom_read_byte(&ee_enable_dhcp);
     if ((_enable_dhcp != 1) && (_enable_dhcp != 0))
@@ -129,6 +129,7 @@ int main(void)
     //httpd_init();
 	simple_httpd_init();
 	//telnetd_init();
+    led_on(5);
 
 
 	while(1){
@@ -178,7 +179,6 @@ int main(void)
 		} else if (_enable_dhcp && timer_expired(&dhcp_timer)) {
 #ifdef __DHCPC_H__
             // for now turn off the led when we start the dhcp process
-            led_low();
             dhcpc_renew();
             timer_reset(&dhcp_timer);
 #endif
@@ -242,10 +242,6 @@ void dhcpc_configured(const struct dhcpc_state *s)
 //  issues with calculating the time.  Just use 5 minutes instead.  
     timer_set(&dhcp_timer, 5 * 60 * CLOCK_SECOND);
 
-#ifdef DHCP_DEBUG
-    // for now turn on the led when we get an ip
-    led_high();
-#endif
 }
 #endif
 

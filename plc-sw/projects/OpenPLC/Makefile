@@ -1,12 +1,9 @@
-#Chip choice
-#MCU		= atmega168
-#CHIP	= m168
 #### larger chip needed for webserver.PROGMEM
-MCU = atmega128
-CHIP   = m128
+MCU = atmega1284p
+CHIP   = m1284p
 
 #Project name
-NAME    = test
+NAME    = openplc
 
 #Compiled apps
 APPS	= simple-httpd

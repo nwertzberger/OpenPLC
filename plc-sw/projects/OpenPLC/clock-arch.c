@@ -22,7 +22,7 @@ ISR(TIMER0_OVF_vect)
 void clock_init(){
 cli(); // disable all interrupts
 TCCR1B = 0; // disable ticking
-TIMSK = (TIMSK & ~(0x3c)) | 0x04; // enable overflow interrupt
+TIMSK1 = (TIMSK1 & ~(0x3c)) | 0x04; // enable overflow interrupt
 TCNT1H = 0; // reset counter
 TCNT1L = 0;
 ICR1H = 40000U >> 8; // set overflow value

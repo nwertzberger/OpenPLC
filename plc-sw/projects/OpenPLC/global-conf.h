@@ -2,24 +2,13 @@
 #ifndef __GLOBAL_CONF_H__
 #define __GLOBAL_CONF_H__
 
-
-#ifdef PORTB1
-//Led on tuxgraphics board
-#define led_conf()      DDRB |= (1<<DDB1)
-#define led_low()       PORTB |= (1<<PORTB1)
-#define led_high()      PORTB &= ~(1<<PORTB1)
-#define led_blink()     PORTB ^= (1<<PORTB1)
-#else
-//Led on tuxgraphics board
-#define led_conf()      DDRB |= (1<<DDB1)
-#define led_low()       PORTB |= (1<<PB1)
-#define led_high()      PORTB &= ~(1<<PB1)
-#define led_blink()     PORTB ^= (1<<PB1)
-#endif
-
+#define led_conf()      DDRD  |= 0xfc
+#define led_on(X)       PORTD |= 1 << (X + 2)
+#define led_off(X)      PORTD &= ~(1 << (X + 2))
 
 //Define frequency
-#define F_CPU 12500000UL
+#define F_CPU 20000000UL
+
 //Mac adress definition for enc28j60
 #define ETHADDR0		0x00
 #define ETHADDR1		0xbd
@@ -27,6 +16,7 @@
 #define ETHADDR3		0x33
 #define ETHADDR4		0x05
 #define ETHADDR5		0x71
+
 //Mac adress definition for uip
 #define UIP_ETHADDR0    ETHADDR0
 #define UIP_ETHADDR1    ETHADDR1
@@ -48,7 +38,6 @@
 #define UIP_DRIPADDR1 168
 #define UIP_DRIPADDR2 2
 #define UIP_DRIPADDR3 1
-
 
 // ENC28J60 SPI port
 #define ENC28J60_SPI_PORT		PORTB

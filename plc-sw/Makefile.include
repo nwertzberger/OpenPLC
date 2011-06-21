@@ -181,3 +181,7 @@ endif
 #display help file
 help::
 	echo "Somebody please write a help page for this makefile";
+
+deploy: obj/$(NAME).hex
+	sudo avrdude -c avrisp2 -p m1284p -P usb -b19200 -B16 -U flash:w:$<
+
