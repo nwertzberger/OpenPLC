@@ -43,30 +43,24 @@ struct timer dhcp_timer;
 
 int main(void)
 {
-    /* Disable watchdog if enabled by bootloader/fuses */
 	led_conf();
-    led_on(0);
+
+    /* Disable watchdog if enabled by bootloader/fuses */
     MCUSR &= ~(1 << WDRF);
     wdt_disable();
-
-    led_on(1);
 	network_init();
-    led_on(2);
 
 	int i;
 	uip_ipaddr_t ipaddr;
 	struct timer periodic_timer, arp_timer;
 
 	clock_init();
-
 	timer_set(&periodic_timer, CLOCK_SECOND / 2);
 	timer_set(&arp_timer, CLOCK_SECOND * 10);
-    led_on(3);
 
 	uip_init();
     // must be done or sometimes arp doesn't work
     uip_arp_init();
-    led_on(4);
 	
     _enable_dhcp=eeprom_read_byte(&ee_enable_dhcp);
     if ((_enable_dhcp != 1) && (_enable_dhcp != 0))
@@ -88,8 +82,8 @@ int main(void)
     }
 
 	uip_setethaddr(my_eth_addr);
-//_enable_dhcp = 1;
-    if (_enable_dhcp)
+//    _enable_dhcp = 1;
+    if (_enable_dhcp && false)
     {
 #ifdef __DHCPC_H__
         // setup the dhcp renew timer the make the first request
@@ -97,6 +91,7 @@ int main(void)
 	    dhcpc_init(&my_eth_addr, 6);
         dhcpc_request();
 #endif
+        led_on(5);
     }
     else
     {
@@ -129,25 +124,29 @@ int main(void)
     //httpd_init();
 	simple_httpd_init();
 	//telnetd_init();
-    led_on(5);
 
+    led_on(0);
 
 	while(1){
 		uip_len = network_read();
 
 		if(uip_len > 0) {
 			if(BUF->type == htons(UIP_ETHTYPE_IP)){
+                led_on(5);
 				uip_arp_ipin(); // arp seems to have issues w/o this
 				uip_input();
 				if(uip_len > 0) {
 					uip_arp_out();
 					network_send();
 				}
+                led_off(5);
 			}else if(BUF->type == htons(UIP_ETHTYPE_ARP)){
+                led_on(4);
 				uip_arp_arpin(); // this is correct
 				if(uip_len > 0){
 					network_send();
 				}
+                led_off(4);
 			}
 
 		}else if(timer_expired(&periodic_timer)) {

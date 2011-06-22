@@ -25,79 +25,11 @@
 
 #include "enc28j60.h"
 
-/*#ifndef SPDR
-#ifdef SPDR0
-	#define SPDR	SPDR0
-	#define SPCR	SPCR0
-	#define SPSR	SPSR0
-
-	#define SPIF	SPIF0
-	#define MSTR	MSTR0
-	#define CPOL	CPOL0
-	#define DORD	DORD0
-	#define SPR0	SPR00
-	#define SPR1	SPR01
-	#define SPI2X	SPI2X0
-	#define SPE		SPE0
-#endif
-#endif
-*/
 // include configuration
 #include "enc28j60conf.h"
 
 u08 Enc28j60Bank;
 u16 NextPacketPtr;
-
-/*void nicInit(void)
-{
-	enc28j60Init();
-}
-
-void nicSend(unsigned int len, unsigned char* packet)
-{
-	enc28j60PacketSend(len, packet);
-}
-
-unsigned int nicPoll(unsigned int maxlen, unsigned char* packet)
-{
-	return enc28j60PacketReceive(maxlen, packet);
-}*/
-
-
-/*void nicRegDump(void)
-{
-	enc28j60RegDump();
-}*/
-
-/*
-void ax88796SetupPorts(void)
-{
-#if NIC_CONNECTION == MEMORY_MAPPED
-	// enable external SRAM interface - no wait states
-	sbi(MCUCR, SRE);
-//	sbi(MCUCR, SRW10);
-//	sbi(XMCRA, SRW00);
-//	sbi(XMCRA, SRW01);
-//	sbi(XMCRA, SRW11);
-#else
-	// set address port to output
-	AX88796_ADDRESS_DDR = AX88796_ADDRESS_MASK;
-    
-	// set data port to input with pull-ups
-	AX88796_DATA_DDR = 0x00;
-	AX88796_DATA_PORT = 0xFF;
-
-	// initialize the control port read and write pins to de-asserted
-	sbi( AX88796_CONTROL_PORT, AX88796_CONTROL_READPIN );
-	sbi( AX88796_CONTROL_PORT, AX88796_CONTROL_WRITEPIN );
-	// set the read and write pins to output
-	sbi( AX88796_CONTROL_DDR, AX88796_CONTROL_READPIN );
-	sbi( AX88796_CONTROL_DDR, AX88796_CONTROL_WRITEPIN );
-#endif
-	// set reset pin to output
-	sbi( AX88796_RESET_DDR, AX88796_RESET_PIN );
-}
-*/
 
 u08 enc28j60ReadOp(u08 op, u08 address)
 {
@@ -243,6 +175,7 @@ void enc28j60PhyWrite(u08 address, u16 data)
 
 void enc28j60Init(void)
 {
+    uint8_t data;
 	// initialize I/O
 	sbi(ENC28J60_CONTROL_DDR, ENC28J60_CONTROL_CS);
 	sbi(ENC28J60_CONTROL_PORT, ENC28J60_CONTROL_CS);
@@ -250,8 +183,10 @@ void enc28j60Init(void)
 	// setup SPI I/O pins
 	sbi(ENC28J60_SPI_PORT, ENC28J60_SPI_SCK);	// set SCK hi
 	sbi(ENC28J60_SPI_DDR, ENC28J60_SPI_SCK);	// set SCK as output
+    
 	cbi(ENC28J60_SPI_DDR, ENC28J60_SPI_MISO);	// set MISO as input
 	sbi(ENC28J60_SPI_DDR, ENC28J60_SPI_MOSI);	// set MOSI as output
+
 	sbi(ENC28J60_SPI_DDR, ENC28J60_SPI_SS);		// SS must be output for Master mode to work
 	// initialize SPI interface
 	// master mode
@@ -261,17 +196,18 @@ void enc28j60Init(void)
 	// Data order MSB first
 	cbi(SPCR,DORD);
 	// switch to f/4 2X = f/2 bitrate
-	cbi(SPCR, SPR0);
-	cbi(SPCR, SPR1);
-	sbi(SPSR, SPI2X);
+	sbi(SPCR, SPR0);
+	sbi(SPCR, SPR1);
+	cbi(SPSR, SPI2X);
 	// enable SPI
 	sbi(SPCR, SPE);
 
 	// perform system reset
+    led_on(1);
 	enc28j60WriteOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
 	// check CLKRDY bit to see if reset is complete
 	_delay_us(50);
-	while(!(enc28j60Read(ESTAT) & ESTAT_CLKRDY));
+	while(!((data = enc28j60Read(ESTAT)) & ESTAT_CLKRDY)); 
 
 	// do bank 0 stuff
 	// initialize receive buffer

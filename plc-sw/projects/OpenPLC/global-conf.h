@@ -9,6 +9,10 @@
 //Define frequency
 #define F_CPU 20000000UL
 
+// Define buffer size.
+#define UIP_CONF_BUFFER_SIZE 800
+#define UIP_REASSEMBLY 0
+
 //Mac adress definition for enc28j60
 #define ETHADDR0		0x00
 #define ETHADDR1		0xbd
@@ -28,7 +32,7 @@
 #define USE_DHCP 0
 #define UIP_IPADDR0 192
 #define UIP_IPADDR1 168
-#define UIP_IPADDR2 2
+#define UIP_IPADDR2 1
 #define UIP_IPADDR3 77
 #define UIP_NETMASK0 255
 #define UIP_NETMASK1 255
@@ -36,7 +40,7 @@
 #define UIP_NETMASK3 0
 #define UIP_DRIPADDR0 192
 #define UIP_DRIPADDR1 168
-#define UIP_DRIPADDR2 2
+#define UIP_DRIPADDR2 1
 #define UIP_DRIPADDR3 1
 
 // ENC28J60 SPI port
