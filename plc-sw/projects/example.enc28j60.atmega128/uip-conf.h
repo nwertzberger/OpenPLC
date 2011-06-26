@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define UIP_REASSEMBLY 0
+
 /**
  * 8 bit datatype
  *

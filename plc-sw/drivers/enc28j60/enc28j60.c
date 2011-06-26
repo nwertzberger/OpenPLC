@@ -203,7 +203,6 @@ void enc28j60Init(void)
 	sbi(SPCR, SPE);
 
 	// perform system reset
-    led_on(1);
 	enc28j60WriteOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
 	// check CLKRDY bit to see if reset is complete
 	_delay_us(50);

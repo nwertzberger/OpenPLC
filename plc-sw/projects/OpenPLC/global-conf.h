@@ -11,7 +11,6 @@
 
 // Define buffer size.
 #define UIP_CONF_BUFFER_SIZE 800
-#define UIP_REASSEMBLY 0
 
 //Mac adress definition for enc28j60
 #define ETHADDR0		0x00
@@ -29,7 +28,7 @@
 #define UIP_ETHADDR4    ETHADDR4
 #define UIP_ETHADDR5    ETHADDR5
 
-#define USE_DHCP 0
+#define USE_DHCP 1
 #define UIP_IPADDR0 192
 #define UIP_IPADDR1 168
 #define UIP_IPADDR2 1

@@ -24,7 +24,7 @@
 /////////////////////////
 
 //#define DHCP_DEBUG 1
-//#include "dhcpc.h"
+#include "dhcpc.h"
 
 //#include "resolv.h"
 //#include "webclient.h"

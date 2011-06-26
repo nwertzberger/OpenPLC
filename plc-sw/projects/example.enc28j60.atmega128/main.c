@@ -10,10 +10,11 @@
 #include "uip_arp.h"
 #include "network.h"
 #include "apps-conf.h"
+#include "enc28j60.h"
 #include <string.h>
 #define BUF ((struct uip_eth_hdr *)&uip_buf[0])
 
-
+#define STEP PORTD = count++ << 2
 
 //EEPROM parameters (TCP/IP parameters)
 uint8_t EEMEM ee_enable_dhcp=USE_DHCP;
@@ -43,21 +44,29 @@ struct timer dhcp_timer;
 
 int main(void)
 {
+    int count = 0;
+    DDRD = 0xff;
+    while (1) {
+        PORTD = 0xff;
+    }
+
     /* Disable watchdog if enabled by bootloader/fuses */
     MCUSR &= ~(1 << WDRF);
     wdt_disable();
 // Note: make the following call in code to reset device
 // wdt_enable(WDTO_500MS); // reset in 2 seconds - requires #include <avr/wdt.h>
 	led_conf();
+    STEP;
 
 	network_init();
 
+    STEP;
 	int i;
 	uip_ipaddr_t ipaddr;
 	struct timer periodic_timer, arp_timer;
 
 	clock_init();
-
+    STEP;
 	timer_set(&periodic_timer, CLOCK_SECOND / 2);
 	timer_set(&arp_timer, CLOCK_SECOND * 10);
 
@@ -65,8 +74,10 @@ int main(void)
     led_low();
 #endif
 	uip_init();
+    STEP;
     // must be done or sometimes arp doesn't work
     uip_arp_init();
+    STEP;
 	
     _enable_dhcp=eeprom_read_byte(&ee_enable_dhcp);
     if ((_enable_dhcp != 1) && (_enable_dhcp != 0))
@@ -132,6 +143,7 @@ int main(void)
 
 
 	while(1){
+        PORTD = count++;
 		uip_len = network_read();
 
 		if(uip_len > 0) {

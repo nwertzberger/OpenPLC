@@ -3,6 +3,7 @@
 #include <avr/io.h>
 #include <avr/eeprom.h>
 #include <avr/wdt.h>
+#include <string.h>
 
 #include "timer.h"
 
@@ -10,16 +11,19 @@
 #include "uip_arp.h"
 #include "network.h"
 #include "apps-conf.h"
-#include <string.h>
+#include "dhcpc.h"
 #define BUF ((struct uip_eth_hdr *)&uip_buf[0])
-
-
 
 //EEPROM parameters (TCP/IP parameters)
 uint8_t EEMEM ee_enable_dhcp=USE_DHCP;
 
 uint8_t EEMEM ee_eth_addr[6]=
-   {UIP_ETHADDR0,UIP_ETHADDR1,UIP_ETHADDR2,UIP_ETHADDR3,UIP_ETHADDR4,UIP_ETHADDR5};
+   {   UIP_ETHADDR0,
+       UIP_ETHADDR1,
+       UIP_ETHADDR2,
+       UIP_ETHADDR3,
+       UIP_ETHADDR4,
+       UIP_ETHADDR5};
 
 uint8_t EEMEM ee_ip_addr[4]= 
       {UIP_IPADDR0, UIP_IPADDR1, UIP_IPADDR2, UIP_IPADDR3};
@@ -37,7 +41,16 @@ uint8_t _ip_addr[4];
 uint8_t _net_mask[4];
 uint8_t _gateway[4];
 
-static struct uip_eth_addr  my_eth_addr = { .addr = {UIP_ETHADDR0,UIP_ETHADDR1,UIP_ETHADDR2,UIP_ETHADDR3,UIP_ETHADDR4,UIP_ETHADDR5}};
+static struct uip_eth_addr  my_eth_addr = { 
+    .addr = {
+        UIP_ETHADDR0,
+        UIP_ETHADDR1,
+        UIP_ETHADDR2,
+        UIP_ETHADDR3,
+        UIP_ETHADDR4,
+        UIP_ETHADDR5
+    }
+};
 
 struct timer dhcp_timer;
 
@@ -48,7 +61,9 @@ int main(void)
     /* Disable watchdog if enabled by bootloader/fuses */
     MCUSR &= ~(1 << WDRF);
     wdt_disable();
+    led_on(0);
 	network_init();
+    led_on(1);
 
 	int i;
 	uip_ipaddr_t ipaddr;
@@ -57,6 +72,7 @@ int main(void)
 	clock_init();
 	timer_set(&periodic_timer, CLOCK_SECOND / 2);
 	timer_set(&arp_timer, CLOCK_SECOND * 10);
+    led_on(2);
 
 	uip_init();
     // must be done or sometimes arp doesn't work
@@ -82,19 +98,21 @@ int main(void)
     }
 
 	uip_setethaddr(my_eth_addr);
-//    _enable_dhcp = 1;
-    if (_enable_dhcp && false)
+    _enable_dhcp = 1;
+    if (_enable_dhcp)
     {
 #ifdef __DHCPC_H__
+        led_on(3);
         // setup the dhcp renew timer the make the first request
         timer_set(&dhcp_timer, CLOCK_SECOND * 600);
 	    dhcpc_init(&my_eth_addr, 6);
         dhcpc_request();
+        led_on(4);
 #endif
-        led_on(5);
     }
     else
     {
+        led_on(5);
         eeprom_read_block ((void *)_ip_addr, (const void *)&ee_ip_addr,4);
         eeprom_read_block ((void *)_net_mask,(const void *)&ee_net_mask,4);
         eeprom_read_block ((void *)_gateway, (const void *)&ee_gateway,4);
@@ -124,8 +142,6 @@ int main(void)
     //httpd_init();
 	simple_httpd_init();
 	//telnetd_init();
-
-    led_on(0);
 
 	while(1){
 		uip_len = network_read();
