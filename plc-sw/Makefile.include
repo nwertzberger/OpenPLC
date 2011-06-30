@@ -1,6 +1,6 @@
 UNAME := $(shell uname)
 
-#CFLAGS += -save-temps
+#CFLAGS += -O0
 
 INCLUDE_FLAGS += -I.
 

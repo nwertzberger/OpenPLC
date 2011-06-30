@@ -41,14 +41,14 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_CONF_MAX_CONNECTIONS 1
+#define UIP_CONF_MAX_CONNECTIONS 10
 
 /**
  * Maximum number of listening TCP ports.
  *
  * \hideinitializer
  */
-#define UIP_CONF_MAX_LISTENPORTS 1
+#define UIP_CONF_MAX_LISTENPORTS 10
 
 /**
  * uIP buffer size.
@@ -61,7 +61,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_CONF_BYTE_ORDER      LITTLE_ENDIAN
+#define UIP_CONF_BYTE_ORDER      BIG_ENDIAN
 
 /**
  * Logging on or off
@@ -96,14 +96,14 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_CONF_BROADCAST		0
+#define UIP_CONF_BROADCAST		1
 
 /**
  * The maximum amount of concurrent UDP connections.
  *
  * \hideinitializer
  */
-#define UIP_CONF_UDP_CONNS		0
+#define UIP_CONF_UDP_CONNS		10
 
 //Include app configuration
 #include "apps-conf.h"

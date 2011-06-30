@@ -39,27 +39,27 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_CONF_MAX_CONNECTIONS 1
+#define UIP_CONF_MAX_CONNECTIONS 3
 
 /**
  * Maximum number of listening TCP ports.
  *
  * \hideinitializer
  */
-#define UIP_CONF_MAX_LISTENPORTS 1
+#define UIP_CONF_MAX_LISTENPORTS 3
 
 /**
  * uIP buffer size.
  *
  * \hideinitializer
  */
-#define UIP_CONF_BUFFER_SIZE     300
+#define UIP_CONF_BUFFER_SIZE     800
 /**
  * CPU byte order.
  *
  * \hideinitializer
  */
-#define UIP_CONF_BYTE_ORDER      LITTLE_ENDIAN
+#define UIP_CONF_BYTE_ORDER      BIG_ENDIAN
 
 /**
  * Logging on or off

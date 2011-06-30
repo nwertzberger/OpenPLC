@@ -3,7 +3,9 @@
 #include <avr/io.h>
 #include <avr/eeprom.h>
 #include <avr/wdt.h>
+#include <avr/interrupt.h>
 #include <string.h>
+#include <util/delay.h>
 
 #include "timer.h"
 
@@ -11,7 +13,7 @@
 #include "uip_arp.h"
 #include "network.h"
 #include "apps-conf.h"
-#include "dhcpc.h"
+
 #define BUF ((struct uip_eth_hdr *)&uip_buf[0])
 
 //EEPROM parameters (TCP/IP parameters)
@@ -58,26 +60,26 @@ int main(void)
 {
 	led_conf();
 
-    /* Disable watchdog if enabled by bootloader/fuses */
-    MCUSR &= ~(1 << WDRF);
-    wdt_disable();
-    led_on(0);
-	network_init();
-    led_on(1);
-
 	int i;
 	uip_ipaddr_t ipaddr;
 	struct timer periodic_timer, arp_timer;
 
+
+    /* Disable watchdog if enabled by bootloader/fuses */
+    MCUSR &= ~(1 << WDRF);
+    WDTCSR |= _BV(_WD_CHANGE_BIT) | _BV(WDE); 
+    WDTCSR = 0; 
+	network_init();
+
 	clock_init();
+
 	timer_set(&periodic_timer, CLOCK_SECOND / 2);
 	timer_set(&arp_timer, CLOCK_SECOND * 10);
-    led_on(2);
 
 	uip_init();
     // must be done or sometimes arp doesn't work
     uip_arp_init();
-	
+
     _enable_dhcp=eeprom_read_byte(&ee_enable_dhcp);
     if ((_enable_dhcp != 1) && (_enable_dhcp != 0))
     {   // if the setting is invalid, enable by default
@@ -102,17 +104,14 @@ int main(void)
     if (_enable_dhcp)
     {
 #ifdef __DHCPC_H__
-        led_on(3);
         // setup the dhcp renew timer the make the first request
         timer_set(&dhcp_timer, CLOCK_SECOND * 600);
 	    dhcpc_init(&my_eth_addr, 6);
         dhcpc_request();
-        led_on(4);
 #endif
     }
     else
     {
-        led_on(5);
         eeprom_read_block ((void *)_ip_addr, (const void *)&ee_ip_addr,4);
         eeprom_read_block ((void *)_net_mask,(const void *)&ee_net_mask,4);
         eeprom_read_block ((void *)_gateway, (const void *)&ee_gateway,4);
@@ -143,55 +142,66 @@ int main(void)
 	simple_httpd_init();
 	//telnetd_init();
 
-	while(1){
+    while (1) { 
 		uip_len = network_read();
 
 		if(uip_len > 0) {
-			if(BUF->type == htons(UIP_ETHTYPE_IP)){
+			if(BUF->type == htons(UIP_ETHTYPE_IP))
+            {
                 led_on(5);
 				uip_arp_ipin(); // arp seems to have issues w/o this
-				uip_input();
-				if(uip_len > 0) {
+				if(uip_len > 0)
+                {
 					uip_arp_out();
 					network_send();
 				}
-                led_off(5);
-			}else if(BUF->type == htons(UIP_ETHTYPE_ARP)){
+			}
+            else if(BUF->type == htons(UIP_ETHTYPE_ARP))
+            {
                 led_on(4);
 				uip_arp_arpin(); // this is correct
-				if(uip_len > 0){
+				if(uip_len > 0)
+                {
 					network_send();
 				}
-                led_off(4);
 			}
 
-		}else if(timer_expired(&periodic_timer)) {
+		}
+        else if(timer_expired(&periodic_timer))
+        {
+            led_off(4);
+            led_off(5);
 			timer_reset(&periodic_timer);
-
-
-			for(i = 0; i < UIP_CONNS; i++) {
+			for(i = 0; i < UIP_CONNS; i++)
+            {
 				uip_periodic(i);
-				if(uip_len > 0) {
+				if(uip_len > 0)
+                {
 					uip_arp_out();
 					network_send();
 				}
 			}
 
 			#if UIP_UDP
-			for(i = 0; i < UIP_UDP_CONNS; i++) {
+			for(i = 0; i < UIP_UDP_CONNS; i++)
+            {
 				uip_udp_periodic(i);
-				if(uip_len > 0) {
+				if(uip_len > 0)
+                {
 					uip_arp_out();
 					network_send();
 				}
 			}
 			#endif /* UIP_UDP */
 
-			if(timer_expired(&arp_timer)) {
+			if(timer_expired(&arp_timer))
+            {
 				timer_reset(&arp_timer);
 				uip_arp_timer();
 			}
-		} else if (_enable_dhcp && timer_expired(&dhcp_timer)) {
+		}
+        else if (_enable_dhcp && timer_expired(&dhcp_timer))
+        {
 #ifdef __DHCPC_H__
             // for now turn off the led when we start the dhcp process
             dhcpc_renew();

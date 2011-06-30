@@ -3,23 +3,14 @@
 #define __GLOBAL_CONF_H__
 
 
-#ifdef PORTB1
-//Led on tuxgraphics board
-#define led_conf()      DDRB |= (1<<DDB1)
-#define led_low()       PORTB |= (1<<PORTB1)
-#define led_high()      PORTB &= ~(1<<PORTB1)
-#define led_blink()     PORTB ^= (1<<PORTB1)
-#else
-//Led on tuxgraphics board
-#define led_conf()      DDRB |= (1<<DDB1)
-#define led_low()       PORTB |= (1<<PB1)
-#define led_high()      PORTB &= ~(1<<PB1)
-#define led_blink()     PORTB ^= (1<<PB1)
-#endif
-
+#define led_conf()      DDRD |= 0xfc
+#define led_low()       PORTD |= (1<<PORTD2)
+#define led_high()      PORTD &= ~(1<<PORTD2)
+#define led_blink()     PORTD ^= (1<<PORTD2)
 
 //Define frequency
-#define F_CPU 12500000UL
+#define F_CPU 20000000UL
+
 //Mac adress definition for enc28j60
 #define ETHADDR0		0x00
 #define ETHADDR1		0xbd
@@ -27,6 +18,7 @@
 #define ETHADDR3		0x33
 #define ETHADDR4		0x05
 #define ETHADDR5		0x71
+
 //Mac adress definition for uip
 #define UIP_ETHADDR0    ETHADDR0
 #define UIP_ETHADDR1    ETHADDR1
@@ -38,7 +30,7 @@
 #define USE_DHCP 0
 #define UIP_IPADDR0 192
 #define UIP_IPADDR1 168
-#define UIP_IPADDR2 2
+#define UIP_IPADDR2 1
 #define UIP_IPADDR3 77
 #define UIP_NETMASK0 255
 #define UIP_NETMASK1 255
@@ -46,7 +38,7 @@
 #define UIP_NETMASK3 0
 #define UIP_DRIPADDR0 192
 #define UIP_DRIPADDR1 168
-#define UIP_DRIPADDR2 2
+#define UIP_DRIPADDR2 1
 #define UIP_DRIPADDR3 1
 
 
@@ -57,7 +49,7 @@
 #define ENC28J60_SPI_MOSI       PORTB5
 #define ENC28J60_SPI_MISO       PORTB6
 #define ENC28J60_SPI_SS         PORTB4
-#define ENC28J60_CONTROL_CS     PORTB2
+#define ENC28J60_CONTROL_CS     PORTB4
 
 // ENC28J60 control port
 #define ENC28J60_CONTROL_PORT	PORTB
