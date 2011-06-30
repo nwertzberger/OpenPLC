@@ -34,19 +34,21 @@ typedef uint16_t u16_t;
  */
 typedef unsigned short uip_stats_t;
 
+#define UIP_REASSEMBLY 0
+
 /**
  * Maximum number of TCP connections.
  *
  * \hideinitializer
  */
-#define UIP_CONF_MAX_CONNECTIONS 3
+#define UIP_CONF_MAX_CONNECTIONS 10
 
 /**
  * Maximum number of listening TCP ports.
  *
  * \hideinitializer
  */
-#define UIP_CONF_MAX_LISTENPORTS 3
+#define UIP_CONF_MAX_LISTENPORTS 10
 
 /**
  * uIP buffer size.
@@ -73,7 +75,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_CONF_UDP             0
+#define UIP_CONF_UDP             1
 
 /**
  * UDP checksums on or off
@@ -94,14 +96,14 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_CONF_BROADCAST		0
+#define UIP_CONF_BROADCAST		1
 
 /**
  * The maximum amount of concurrent UDP connections.
  *
  * \hideinitializer
  */
-#define UIP_CONF_UDP_CONNS		0
+#define UIP_CONF_UDP_CONNS		10
 
 //Include app configuration
 #include "apps-conf.h"

@@ -18,32 +18,34 @@ ISR(TIMER1_OVF_vect)
 }
 
 //Initialise the clock
-void clock_init(){
-cli(); // disable all interrupts
-TCCR1B = 0; // disable ticking
-TCNT1H = 0; // reset counter
-TCNT1L = 0;
-ICR1H = 40000U >> 8; // set overflow value
-ICR1L = 40000U & 0xff;
+void clock_init()
+{
+    cli();
 
-TCCR1A = 0xf2; // 11 11 11 10, set channel config
+    TCCR1B = 0; // disable ticking
+    TCNT1H = 0; // reset counter
+    TCNT1L = 0;
+    ICR1H = 40000U >> 8; // set overflow value
+    ICR1L = 40000U & 0xff;
+    TCCR1A = 0x02; // 11 11 00 10, set channel config
 
-TIMSK1 |= (1<<TOIE0);
+    //Activate overflow interrupt for timer1
+    TIMSK1 = (1<<TOIE1);
 
-//Use prescaler 1024
-TCCR1B |= ((1<<CS12)|(1<<CS10));
+    //Use prescaler 1024
+    TCCR1B |= ((1<<CS12)|(1<<CS10));
 
-//Activate interrupts
-sei();
+    sei();
 }
 
 //Return time
-clock_time_t clock_time(){
-	clock_time_t time;
+clock_time_t clock_time()
+{
+    clock_time_t time;
 
-	cli();
-	time = clock_datetime;
-	sei();
+    cli();
+    time = clock_datetime;
+    sei();
 
-	return time;
+    return time;
 }
