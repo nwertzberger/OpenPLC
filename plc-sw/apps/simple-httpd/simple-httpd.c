@@ -8,12 +8,14 @@ static int handle_connection(struct simple_httpd_state *s);
 
 void simple_httpd_init(void)
 {
+    PORTD |= 1 << 2;
 	uip_listen(HTONS(80));
 }
 
 #if defined PORT_APP_MAPPER
 void simple_httpd_appcall(void)
 {
+    PORTD |= 1 << 3;
 	struct simple_httpd_state *s = &(httpd_state_list[0]);
 #else
 void simple_httpd_appcall(void)
@@ -29,6 +31,7 @@ void simple_httpd_appcall(void)
 
 static int handle_connection(struct simple_httpd_state *s)
 {
+  PORTD |= 1 << 4;
   PSOCK_BEGIN(&s->p);
   PSOCK_SEND_STR(&s->p, "HTTP/1.0 200 OK\r\n");
   PSOCK_SEND_STR(&s->p, "Content-Type: text/plain\r\n");

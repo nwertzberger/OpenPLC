@@ -5,7 +5,6 @@
 #include <avr/wdt.h>
 #include <avr/interrupt.h>
 #include <string.h>
-#include <util/delay.h>
 
 #include "timer.h"
 
@@ -64,13 +63,12 @@ int main(void)
 	uip_ipaddr_t ipaddr;
 	struct timer periodic_timer, arp_timer;
 
-
     /* Disable watchdog if enabled by bootloader/fuses */
     MCUSR &= ~(1 << WDRF);
     WDTCSR |= _BV(_WD_CHANGE_BIT) | _BV(WDE); 
     WDTCSR = 0; 
-	network_init();
 
+	network_init();
 	clock_init();
 
 	timer_set(&periodic_timer, CLOCK_SECOND / 2);
@@ -150,6 +148,7 @@ int main(void)
             {
                 led_on(5);
 				uip_arp_ipin(); // arp seems to have issues w/o this
+                uip_input();
 				if(uip_len > 0)
                 {
 					uip_arp_out();
@@ -182,7 +181,7 @@ int main(void)
 				}
 			}
 
-			#if UIP_UDP
+#if UIP_UDP
 			for(i = 0; i < UIP_UDP_CONNS; i++)
             {
 				uip_udp_periodic(i);
@@ -192,7 +191,7 @@ int main(void)
 					network_send();
 				}
 			}
-			#endif /* UIP_UDP */
+#endif /* UIP_UDP */
 
 			if(timer_expired(&arp_timer))
             {
@@ -203,6 +202,7 @@ int main(void)
         else if (_enable_dhcp && timer_expired(&dhcp_timer))
         {
 #ifdef __DHCPC_H__
+            led_on(3);
             // for now turn off the led when we start the dhcp process
             dhcpc_renew();
             timer_reset(&dhcp_timer);

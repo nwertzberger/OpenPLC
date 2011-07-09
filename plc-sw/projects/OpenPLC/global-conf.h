@@ -9,10 +9,6 @@
 //Define frequency
 #define F_CPU 20000000UL
 
-// Define buffer size.
-#define UIP_CONF_BUFFER_SIZE    800
-#define UIP_CONF_BYTE_ORDER     BIG_ENDIAN
-
 //Mac adress definition for enc28j60
 #define ETHADDR0		0x00
 #define ETHADDR1		0xbd
