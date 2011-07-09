@@ -8,8 +8,8 @@
 
 //#include "smtp.h"
 //#include "hello-world.h"
-#include "simple-httpd.h"
-//#include "telnetd.h"
+//#include "simple-httpd.h"
+#include "telnetd.h"
 
 /////////////////////////
 // webserver options
