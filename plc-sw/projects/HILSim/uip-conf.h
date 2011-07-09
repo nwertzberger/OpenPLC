@@ -34,7 +34,7 @@ typedef uint16_t u16_t;
  */
 typedef unsigned short uip_stats_t;
 
-#define UIP_REASSEMBLY 0
+#define UIP_REASSEMBLY 1
 
 /**
  * Maximum number of TCP connections.
@@ -55,7 +55,7 @@ typedef unsigned short uip_stats_t;
  *
  * \hideinitializer
  */
-#define UIP_CONF_BUFFER_SIZE     800
+#define UIP_CONF_BUFFER_SIZE     1024
 /**
  * CPU byte order.
  *
