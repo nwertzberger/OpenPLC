@@ -6,7 +6,7 @@ CHIP 	= m1284p
 NAME    = hilsim
 
 #Compiled apps
-APPS	= telnetd dhcpc
+APPS	= jsoncmd dhcpc
 
 #Compiled drivers
 DEVS	= enc28j60 #The rest are determined by makefiles for apps

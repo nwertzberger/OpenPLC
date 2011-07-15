@@ -140,6 +140,7 @@ int main(void)
 	simple_httpd_init();
 	//telnetd_init();
 
+    led_on(5);
     while (1) { 
 		uip_len = network_read();
 

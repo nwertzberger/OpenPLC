@@ -41,7 +41,7 @@ struct ptentry {
   void (* pfunc)(char *str);
 };
 
-#define SHELL_PROMPT "uIP 1.0> "
+#define SHELL_PROMPT "HILSim> "
 
 /*---------------------------------------------------------------------------*/
 static void
@@ -82,6 +82,7 @@ help(char *str)
   shell_output("help, ? - show help", "");
   shell_output("exit    - exit shell", "");
 }
+
 /*---------------------------------------------------------------------------*/
 static void
 unknown(char *str)
@@ -109,7 +110,7 @@ shell_init(void)
 void
 shell_start(void)
 {
-  shell_output("uIP command shell", "");
+  shell_output("HILSim command shell", "");
   shell_output("Type '?' and return for help", "");
   shell_prompt(SHELL_PROMPT);
 }

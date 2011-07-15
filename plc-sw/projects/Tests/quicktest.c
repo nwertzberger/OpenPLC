@@ -70,7 +70,6 @@ int main(int argc, const char *argv[])
     DDRB = 0xb0;
     PORTB |= 0x10;
     SPCR = (1<<SPE) | (1<<MSTR);
-
     // Wait for chip to come online.
     while (!(eth_read(ESTAT) & 0x01));
     led_on(1);
@@ -85,11 +84,12 @@ int main(int argc, const char *argv[])
 
     // Switch bank to bank 1
     while (1) {
-        uint32_t i;
-        led_on(3);
-        for(i = 0; i < 100000ul; i++);
-        led_off(3);
-        for(i = 0; i < 100000ul; i++);
+        if (eth_read(ERDPTL) == 0xfa) {
+            led_on(3);
+        }
+        else {
+            led_off(3);
+        }
     }
     return 0;
 }

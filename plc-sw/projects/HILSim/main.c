@@ -135,10 +135,7 @@ int main(void)
         }
     }
 
-    // start up the webserver
-    //httpd_init();
-	//simple_httpd_init();
-	telnetd_init();
+	jsoncmd_init();
 
     while (1) { 
 		uip_len = network_read();
