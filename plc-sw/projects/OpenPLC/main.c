@@ -137,8 +137,8 @@ int main(void)
 
     // start up the webserver
     //httpd_init();
-	simple_httpd_init();
-	//telnetd_init();
+	//simple_httpd_init();
+	telnetd_init();
 
     led_on(5);
     while (1) { 
