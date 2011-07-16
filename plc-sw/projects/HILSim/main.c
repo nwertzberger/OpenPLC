@@ -75,6 +75,7 @@ int main(void)
 	timer_set(&arp_timer, CLOCK_SECOND * 10);
 
 	uip_init();
+    phys_init();
     // must be done or sometimes arp doesn't work
     uip_arp_init();
 
