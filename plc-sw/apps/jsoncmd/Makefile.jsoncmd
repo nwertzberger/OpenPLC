@@ -1,0 +1,3 @@
+APP_SOURCES += jsoncmd.c shell.c memb.c
+
+LIBS+= memb
